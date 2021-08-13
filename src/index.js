@@ -9,6 +9,15 @@ dommy.appendChildren(document.body,x,y,footer());
 
 
 
-let a = {ide:"001",name:"Tom"};
-
+let a = {id:"001",name:"Tommy"};
+let b = {id:"002",name:"Dick"};
+let c = {id:"003",name:"Mother Smothers"};
 storage.store(a);
+storage.store(b);
+storage.store(c);
+storage.store({id:"002",name:"Thief"});
+
+let a1 = storage.retrieve("001");
+a1.lastName = "Smothers";
+console.log(a1)
+
