@@ -5,26 +5,14 @@
 <body>
     <h1>Script Testing</h1>
     <script>
-        let arr1 = ["a","b","cde","f"];
+        const f1 = function(a) {
+            if (false) {
+                console.log("IF block");
+                return;
+            }
+            console.log("After IF");
+        }
 
-let match;
-let i = 0;
-while (!match && i < memory.length) {
-    if (memory[i])
-}
-arr1.forEach(function(node){
-    if (node.length > 1) {
-        match = node;
-    }
-})
-
-console.log(match);
-
-if (match) {
-    console.log(match);
-} else {
-console.log("Not Found");
-}
-
+        f1();
     </script>
 </body>

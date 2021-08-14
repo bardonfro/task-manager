@@ -15,9 +15,6 @@ let c = {id:"003",name:"Mother Smothers"};
 storage.store(a);
 storage.store(b);
 storage.store(c);
-storage.store({id:"002",name:"Thief"});
+//storage.store({id:"001",name:"Thief"});
 
-let a1 = storage.retrieve("001");
-a1.lastName = "Smothers";
-console.log(a1)
-
+console.log(storage.lookup("001", "name"));
