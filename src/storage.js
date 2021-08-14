@@ -1,5 +1,9 @@
 let memory = [];
 
+const init = function() {
+    memory = JSON.parse(localStorage.database);
+}
+
 const isDuplicateID = function(submission) {
     
     let result;
@@ -13,7 +17,6 @@ const isDuplicateID = function(submission) {
 
 const lookup = function (strID,property) {
     const obj = retrieve(strID);
-
     return obj[property];
 }
 
@@ -24,7 +27,7 @@ const store = function (obj) {
         return;
     };
     memory.push(obj);
-    const location = memory.indexOf(obj);
+    storeLocal();
 }
 
 const remove = function (strID) {
@@ -32,6 +35,7 @@ const remove = function (strID) {
     if (!(obj)) {return;};
     const index = memory.indexOf(obj);
     memory.splice(index,1);
+    storeLocal();
 }
 
 const retrieve = function (strID) {
@@ -51,4 +55,8 @@ const show = function () {
     console.table(memory);
 }
 
-export {lookup, store, remove, retrieve, show};
+const storeLocal = function() {
+    localStorage.database = JSON.stringify(memory);
+}
+
+export {init, lookup, store, remove, retrieve, show};

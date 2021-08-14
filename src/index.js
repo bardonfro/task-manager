@@ -8,13 +8,10 @@ const y = dommy.el('h2.temp-subtitle',"A Task Manager For The Rest Of Us");
 dommy.appendChildren(document.body,x,y,footer());
 
 
+storage.init();
 
-let a = {id:"001",name:"Tommy"};
-let b = {id:"002",name:"Dick"};
-let c = {id:"003",name:"Mother Smothers"};
-storage.store(a);
-storage.store(b);
-storage.store(c);
-//storage.store({id:"001",name:"Thief"});
 
-console.log(storage.lookup("001", "name"));
+storage.remove("004");
+
+storage.show();
+
