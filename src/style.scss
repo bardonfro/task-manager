@@ -6,11 +6,6 @@ html, body {
     padding: 0px;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-}
-
 div {
     min-width: 10px;
     min-height: 10px;
@@ -27,7 +22,7 @@ div {
 }
 
 #header {
-    flex-grow: 0;
+    height: 2em;
 }
 
 #content {
@@ -37,10 +32,37 @@ div {
 
 #workspace {
     flex-grow: 1;
+    display: flex;
 }
 
 #pane-selector {
     flex-grow: 0;
+}
+
+.pane {
+    margin: .3rem;
+    padding:.3em;
+    display: flex;
+    flex-direction: column;
+
+    .pane-title {
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    .pane-content {
+        padding: .1em;
+        flex-grow:1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow: auto;
+    }
+
+}
+
+.card {
+    min-height:100px;
 }
 
 
