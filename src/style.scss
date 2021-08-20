@@ -33,6 +33,11 @@ div {
 #workspace {
     flex-grow: 1;
     display: flex;
+    align-items: flex-start;
+}
+
+#projects-pane {
+    height: 100%;
 }
 
 #pane-selector {
@@ -40,7 +45,7 @@ div {
 }
 
 .pane {
-    margin: .3rem;
+    margin-right: .3rem;
     padding:.3em;
     display: flex;
     flex-direction: column;

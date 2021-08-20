@@ -1,36 +1,10 @@
 import * as dommy from './dommy.js';
 import * as storage from './storage.js';
+import * as elements from './elements.js';
+import * as core from './coreLogic.js';
 import footer from './footer.js';
 import './style.scss';
 
-const renderPane = function(obj) {
-    const pane = document.createElement('div');
-    const name = obj.name;
-    if (obj.id) {
-        pane.id = obj.id;
-    }
-    if (obj.classList) {
-        pane.classList = "pane " + obj.classList;
-    } else {
-        pane.classList = "pane";
-    }
-
-    const title = document.createElement('h3');
-        title.textContent = name;
-        title.classList = "pane-title";
-        pane.appendChild(title);
-    
-    const paneContent = document.createElement('div');
-        paneContent.classList = "pane-content";
-        pane.appendChild(paneContent);
-        pane.content = paneContent;
-    
-    pane.appendCard = function (card) {
-        pane.content.appendChild(card);
-    }
-
-    return pane;
-}
 
 
 
@@ -54,7 +28,9 @@ const renderTaskCard = function(obj) {
     return card;
 }
         
-
+const newButtonClick2 = function() {
+    console.log("What? (Index)");
+}
 
 
 
@@ -73,35 +49,35 @@ dommy.appendChildren(pageWrapper,header,contentWrapper,footer());
 
 
 // Filling the workspace
-const projectsPane = renderPane({name:"Projects",id:"projects-pane"});
-
-const testCard = renderTaskCard({name:"Get a Thing"});
-const test2 = renderTaskCard({name:"Do a Thing"});
-const test3 = renderTaskCard({name:"Wish a Thing"});
-const test4 = renderTaskCard({name:"See a Thing"});
-
-projectsPane.appendCard(testCard);
-projectsPane.appendCard(test2);
-projectsPane.appendCard(test3);
-projectsPane.appendCard(test4);
-
-const nextActionsPane = renderPane({name:"Next Actions",id:"next-actions-pane"});
-
-const ac1 = renderTaskCard({name:"Bang a Thing"});
-const ac2 = renderTaskCard({name:"Hang a Thing"});
-const ac3 = renderTaskCard({name:"Throw a Thing"});
-const ac4 = renderTaskCard({name:"Catch a Thing"});
-
-nextActionsPane.appendCard(ac1);
-nextActionsPane.appendCard(ac2);
-nextActionsPane.appendCard(ac3);
-nextActionsPane.appendCard(ac4);
-
-
+const projectsPane = elements.pane({name:"Projects",id:"projects-pane"});
+const nextActionsPane = elements.pane({name:"Next Actions",id:"next-actions-pane"});
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
+
+const tempFill = (function() {
+
+    const testCard = renderTaskCard({name:"Get a Thing"});
+    const test2 = renderTaskCard({name:"Do a Thing"});
+    const test3 = renderTaskCard({name:"Wish a Thing"});
+    const test4 = renderTaskCard({name:"See a Thing"});
+
+    projectsPane.appendCard(testCard);
+    projectsPane.appendCard(test2);
+    projectsPane.appendCard(test3);
+    projectsPane.appendCard(test4);
+
+
+    const ac1 = renderTaskCard({name:"Whack a Thing"});
+    const ac2 = renderTaskCard({name:"Hang a Thing"});
+    const ac3 = renderTaskCard({name:"Throw a Thing"});
+    const ac4 = renderTaskCard({name:"Catch a Big Hairy Thing"});
+
+    nextActionsPane.appendCard(ac1);
+    nextActionsPane.appendCard(ac2);
+    nextActionsPane.appendCard(ac3);
+    nextActionsPane.appendCard(ac4);
+
+})();
+
 
 
 storage.init();
-storage.show();
-
- 

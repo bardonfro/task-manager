@@ -1,32 +1,47 @@
 let memory = [];
+let projects = [];
+let tasks = [];
+
+const getByID = function(strID) {
+    const obj = retrieve(strID);
+    return JSON.stringify(obj);
+}
+
+const getNextActions = function () {
+    let nextActions = [];
+    tasks.forEach(function(task) {
+        if (task.isActionable === true) {
+            nextActions.push(task);
+        }
+    });
+    return JSON.stringify(nextActions);
+}
 
 const init = function() {
     memory = JSON.parse(localStorage.database);
+    projects = JSON.parse(localStorage.projects);
+    tasks = JSON.parse(localStorage.tasks);
 }
 
-const isDuplicateID = function(submission) {
-    
-    let result;
-    memory.forEach(function(storedItem){
-        if (storedItem.id === submission.id) {
-            result = true;
-        }
-    })
-    return result;
-}
-
-const lookup = function (strID,property) {
+const lookupKey = function (strID,property) {
     const obj = retrieve(strID);
     return obj[property];
 }
 
-const store = function (obj) {
-    if (isDuplicateID(obj)){
-        console.log("ERROR: Cannot store the following. Duplicate ID");
-        console.log(obj);
-        return;
-    };
-    memory.push(obj);
+const modify = function(strID,property,value) {
+    const obj = retrieve(strID);
+    obj[property] = value;
+}
+
+const newProject = function(jsonString) {
+    const obj = JSON.parse(jsonString);
+    projects.push(obj);
+    storeLocal();
+}
+
+const newTask = function(jsonString) {
+    const obj = JSON.parse(jsonString);
+    tasks.push(obj);
     storeLocal();
 }
 
@@ -47,8 +62,8 @@ const retrieve = function (strID) {
         }    
         i++
     }    
-
-   return match; 
+    
+    return match; 
 }   
 
 const show = function () {
@@ -57,6 +72,27 @@ const show = function () {
 
 const storeLocal = function() {
     localStorage.database = JSON.stringify(memory);
+    localStorage.projects = JSON.stringify(projects);
+    localStorage.tasks = JSON.stringify(tasks);
 }
 
-export {init, lookup, store, remove, retrieve, show};
+const showProjects = function () {
+    console.table(projects);
+}
+
+const showTasks = function () {
+    console.table(tasks);
+}
+
+export {getByID,
+        getNextActions,
+        init,
+        lookupKey,
+        modify,
+        newProject,
+        newTask,
+        remove,
+        show,
+        showProjects,
+        showTasks,
+    };
