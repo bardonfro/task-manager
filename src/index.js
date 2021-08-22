@@ -10,18 +10,11 @@ import './style.scss';
 
 const renderTaskCard = function(obj) {
     const card = document.createElement('div');
-    const name = obj.name;
-    if (obj.id) {
-        card.id = obj.id;
-    }
-    if (obj.classList) {
-        card.classList = "card " + obj.classList;
-    } else {
-        card.classList = "card";
-    }
+    card.classList = "card";
+    card.dataset.id = obj.id;
 
     const title = document.createElement('p');
-        title.textContent = name;
+        title.textContent = obj.name;
         title.classList = "card-title";
         card.appendChild(title);
     
@@ -55,29 +48,42 @@ dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
 
 const tempFill = (function() {
 
-    const testCard = renderTaskCard({name:"Get a Thing"});
-    const test2 = renderTaskCard({name:"Do a Thing"});
-    const test3 = renderTaskCard({name:"Wish a Thing"});
-    const test4 = renderTaskCard({name:"See a Thing"});
+    const testProj1 = storage.newProject("Build a house");
+    projectsPane.appendCard(renderTaskCard(testProj1));
 
-    projectsPane.appendCard(testCard);
-    projectsPane.appendCard(test2);
-    projectsPane.appendCard(test3);
-    projectsPane.appendCard(test4);
+    const testTask1 = storage.newTask("Buy nails");
+    nextActionsPane.appendCard(renderTaskCard(testTask1));
 
 
-    const ac1 = renderTaskCard({name:"Whack a Thing"});
-    const ac2 = renderTaskCard({name:"Hang a Thing"});
-    const ac3 = renderTaskCard({name:"Throw a Thing"});
-    const ac4 = renderTaskCard({name:"Catch a Big Hairy Thing"});
 
-    nextActionsPane.appendCard(ac1);
-    nextActionsPane.appendCard(ac2);
-    nextActionsPane.appendCard(ac3);
-    nextActionsPane.appendCard(ac4);
+    // const testCard = renderTaskCard({name:"Get a Thing"});
+    // const test2 = renderTaskCard({name:"Do a Thing"});
+    // const test3 = renderTaskCard({name:"Wish a Thing"});
+    // const test4 = renderTaskCard({name:"See a Thing"});
+
+    // projectsPane.appendCard(testCard);
+    // projectsPane.appendCard(test2);
+    // projectsPane.appendCard(test3);
+    // projectsPane.appendCard(test4);
+
+
+    // const ac1 = renderTaskCard({name:"Whack a Thing"});
+    // const ac2 = renderTaskCard({name:"Hang a Thing"});
+    // const ac3 = renderTaskCard({name:"Throw a Thing"});
+    // const ac4 = renderTaskCard({name:"Catch a Big Hairy Thing"});
+
+    // nextActionsPane.appendCard(ac1);
+    // nextActionsPane.appendCard(ac2);
+    // nextActionsPane.appendCard(ac3);
+    // nextActionsPane.appendCard(ac4);
 
 })();
 
 
 
-storage.init();
+//storage.init();
+
+storage.show();
+
+console.log(storage.lookupKey("1","name"));
+

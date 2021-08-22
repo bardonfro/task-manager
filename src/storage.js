@@ -1,6 +1,20 @@
-let memory = [];
+let arrItems = [{name:"Test",id:"1"}];
 let projects = [];
 let tasks = [];
+
+class Project {
+    constructor (name) {
+        this.name = name;
+        this.id = "p" + new Date().valueOf();
+    }
+}
+
+class Task {
+    constructor(name) {
+        this.name = name;
+        this.id = "t" + new Date().valueOf();
+    }
+}
 
 const getByID = function(strID) {
     const obj = retrieve(strID);
@@ -18,9 +32,13 @@ const getNextActions = function () {
 }
 
 const init = function() {
-    memory = JSON.parse(localStorage.database);
+    arrItems = JSON.parse(localStorage.database);
     projects = JSON.parse(localStorage.projects);
     tasks = JSON.parse(localStorage.tasks);
+}
+
+const _lookupItem = function(id) {
+    return arrItems.find(item => item.id === id);
 }
 
 const lookupKey = function (strID,property) {
@@ -33,32 +51,34 @@ const modify = function(strID,property,value) {
     obj[property] = value;
 }
 
-const newProject = function(jsonString) {
-    const obj = JSON.parse(jsonString);
-    projects.push(obj);
+const newProject = function(name) {
+    const project = new Project(name);
+    arrItems.push(project);
     storeLocal();
+    return project;
 }
 
-const newTask = function(jsonString) {
-    const obj = JSON.parse(jsonString);
-    tasks.push(obj);
+const newTask = function(name) {
+    const task = new Task(name);
+    arrItems.push(task);
     storeLocal();
+    return task;
 }
 
 const remove = function (strID) {
     const obj = retrieve(strID);
     if (!(obj)) {return;};
-    const index = memory.indexOf(obj);
-    memory.splice(index,1);
+    const index = arrItems.indexOf(obj);
+    arrItems.splice(index,1);
     storeLocal();
 }
 
 const retrieve = function (strID) {
     let match;
     let i = 0;
-    while (!(match) && i < memory.length) {
-        if (memory[i].id === strID) {
-            match = memory[i];
+    while (!(match) && i < arrItems.length) {
+        if (arrItems[i].id === strID) {
+            match = arrItems[i];
         }    
         i++
     }    
@@ -67,11 +87,11 @@ const retrieve = function (strID) {
 }   
 
 const show = function () {
-    console.table(memory);
+    console.table(arrItems);
 }
 
 const storeLocal = function() {
-    localStorage.database = JSON.stringify(memory);
+    localStorage.database = JSON.stringify(arrItems);
     localStorage.projects = JSON.stringify(projects);
     localStorage.tasks = JSON.stringify(tasks);
 }
