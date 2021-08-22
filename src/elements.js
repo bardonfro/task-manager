@@ -2,13 +2,27 @@ const newButtonClick = function () {
     console.log("You clicked?");
 }
 
-const renderBtnNew = function() {
-    const btn = document.createElement('button');
-        btn.classList = "new-button";
-        btn.textContent = "+";
-        btn.onclick = newButtonClick;
+const renderFormAdd = function() {
+    const formWrapper = document.createElement('div');
+        formWrapper.classList = "pane-form-wrapper";
+    const form = document.createElement('form');
+        const textInput = document.createElement('input');
+            textInput.type = "text";
+            textInput.placeholder = "Add New Item";
+            textInput.name = "Input Name";
+            textInput.required = true;
+            textInput.classList = "text-input";
+        const submit = document.createElement('input');
+            submit.type = "submit";
+            submit.value = "+";
+            submit.classList = "submit";
+
+        form.appendChild(textInput);
+        form.appendChild(submit);
+        form.onsubmit = function(e){console.log(e); textInput.value = ""; return false;};   
+    formWrapper.appendChild(form);
         
-    return btn;
+    return form;
 }
 
 const renderPane = function(obj) {
@@ -33,7 +47,7 @@ const renderPane = function(obj) {
         pane.appendChild(paneContent);
         pane.content = paneContent;
     
-    pane.appendChild(renderBtnNew());
+    pane.appendChild(renderFormAdd());
     
     pane.appendCard = function (card) {
         pane.content.appendChild(card);
