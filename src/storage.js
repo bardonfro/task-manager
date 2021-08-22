@@ -1,4 +1,4 @@
-let arrItems = [{name:"Test",id:"1"}];
+let arrItems = [{name:"Test",id:"1",isActionable:true}];
 let projects = [];
 let tasks = [];
 
@@ -16,25 +16,18 @@ class Task {
     }
 }
 
-const getByID = function(strID) {
-    const obj = retrieve(strID);
-    return JSON.stringify(obj);
-}
-
 const getNextActions = function () {
     let nextActions = [];
-    tasks.forEach(function(task) {
-        if (task.isActionable === true) {
-            nextActions.push(task);
+    arrItems.forEach(function(item) {
+        if (item.isActionable === true) {
+            nextActions.push(item.id);
         }
     });
-    return JSON.stringify(nextActions);
+    return nextActions;
 }
 
 const init = function() {
     arrItems = JSON.parse(localStorage.database);
-    projects = JSON.parse(localStorage.projects);
-    tasks = JSON.parse(localStorage.tasks);
 }
 
 const _lookupItem = function(id) {
@@ -42,12 +35,12 @@ const _lookupItem = function(id) {
 }
 
 const lookupKey = function (strID,property) {
-    const obj = retrieve(strID);
+    const obj = _lookupItem(strID);
     return obj[property];
 }
 
 const modify = function(strID,property,value) {
-    const obj = retrieve(strID);
+    const obj = _lookupItem(strID);
     obj[property] = value;
 }
 
@@ -66,25 +59,12 @@ const newTask = function(name) {
 }
 
 const remove = function (strID) {
-    const obj = retrieve(strID);
+    const obj = _lookupItem(strID);
     if (!(obj)) {return;};
     const index = arrItems.indexOf(obj);
     arrItems.splice(index,1);
     storeLocal();
 }
-
-const retrieve = function (strID) {
-    let match;
-    let i = 0;
-    while (!(match) && i < arrItems.length) {
-        if (arrItems[i].id === strID) {
-            match = arrItems[i];
-        }    
-        i++
-    }    
-    
-    return match; 
-}   
 
 const show = function () {
     console.table(arrItems);
@@ -92,20 +72,9 @@ const show = function () {
 
 const storeLocal = function() {
     localStorage.database = JSON.stringify(arrItems);
-    localStorage.projects = JSON.stringify(projects);
-    localStorage.tasks = JSON.stringify(tasks);
 }
 
-const showProjects = function () {
-    console.table(projects);
-}
-
-const showTasks = function () {
-    console.table(tasks);
-}
-
-export {getByID,
-        getNextActions,
+export {getNextActions,
         init,
         lookupKey,
         modify,
@@ -113,6 +82,5 @@ export {getByID,
         newTask,
         remove,
         show,
-        showProjects,
-        showTasks,
+        _lookupItem as returnItem, //For development testing purposes
     };

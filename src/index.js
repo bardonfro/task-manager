@@ -1,7 +1,6 @@
 import * as dommy from './dommy.js';
 import * as storage from './storage.js';
 import * as elements from './elements.js';
-import * as core from './coreLogic.js';
 import footer from './footer.js';
 import './style.scss';
 
@@ -52,6 +51,8 @@ const tempFill = (function() {
     projectsPane.appendCard(renderTaskCard(testProj1));
 
     const testTask1 = storage.newTask("Buy nails");
+        storage.modify(testTask1.id,"isActionable",true);
+
     nextActionsPane.appendCard(renderTaskCard(testTask1));
 
 
@@ -87,3 +88,4 @@ storage.show();
 
 console.log(storage.lookupKey("1","name"));
 
+console.log(storage.getNextActions());
