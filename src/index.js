@@ -5,26 +5,11 @@ import footer from './footer.js';
 import './style.scss';
 
 
-
-
-const renderTaskCard = function(obj) {
-    const card = document.createElement('div');
-    card.classList = "card";
-    card.dataset.id = obj.id;
-
-    const title = document.createElement('p');
-        title.textContent = obj.name;
-        title.classList = "card-title";
-        card.appendChild(title);
-    
-    return card;
-}
-        
 const populateNextActions = function() {
     nextActionsPane.clear();
     const arrNextActions = core.getNextActions();
     arrNextActions.forEach(function(task) {
-        nextActionsPane.appendCard(renderTaskCard(task));
+        nextActionsPane.appendCard(elements.taskCard(task));
     })
 }
 
@@ -32,7 +17,7 @@ const populateProjects = function() {
     projectsPane.clear();
     const arrProjects = core.getProjects();
     arrProjects.forEach(function(project) {
-        projectsPane.appendCard(renderTaskCard(project));
+        projectsPane.appendCard(elements.projectCard(project));
     })
 }
 

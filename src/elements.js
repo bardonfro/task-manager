@@ -1,7 +1,3 @@
-const newButtonClick = function () {
-    console.log("You clicked?");
-}
-
 const renderFormAdd = function() {
     const formWrapper = document.createElement('div');
         formWrapper.classList = "pane-form-wrapper";
@@ -64,6 +60,36 @@ const renderPane = function(obj) {
     return pane;
 }
 
+const renderProjectCard = function(obj) {
+    const card = document.createElement('div');
+    card.classList = "card project-card";
+    card.dataset.id = obj.id;
+
+    const title = document.createElement('p');
+        title.textContent = obj.name;
+        title.classList = "card-title";
+        card.appendChild(title);
+    
+    return card;
+}
+
+
+const renderTaskCard = function(obj) {
+    const card = document.createElement('div');
+    card.classList = "card task-card";
+    card.dataset.id = obj.id;
+
+    const title = document.createElement('p');
+        title.textContent = obj.name;
+        title.classList = "card-title";
+        card.appendChild(title);
+    
+    return card;
+}
+
+
 export {
     renderPane as pane,
+    renderProjectCard as projectCard,
+    renderTaskCard as taskCard,
 }
