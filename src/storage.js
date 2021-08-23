@@ -1,86 +1,93 @@
 let arrItems = [{name:"Test",id:"1",isActionable:true}];
-let projects = [];
-let tasks = [];
+let sdirectory = [];
 
-class Project {
-    constructor (name) {
-        this.name = name;
-        this.id = "p" + new Date().valueOf();
-    }
-}
+const directory = {
+    add: function(strID) {
+        const temp = this.get();
+        temp.push(strID);
+        temp.sort();
+        localStorage.directory = JSON.stringify(temp);
+    },
 
-class Task {
-    constructor(name) {
-        this.name = name;
-        this.id = "t" + new Date().valueOf();
-    }
-}
-
-const getNextActions = function () {
-    let nextActions = [];
-    arrItems.forEach(function(item) {
-        if (item.isActionable === true) {
-            nextActions.push(item.id);
+    get: function() {
+        if (!localStorage.directory) {
+            return [];
+        } else {
+            return JSON.parse(localStorage.directory);
         }
-    });
-    return nextActions;
+    },
+
+    remove: function (strID) {
+        temp = this.get();
+        const index = temp.indexOf(strID);
+        if (index < 0) {return};
+        temp.splice(index,1);
+        localStorage.directory = JSON.stringify(temp);
+    },
 }
 
-const init = function() {
-    arrItems = JSON.parse(localStorage.database);
+const getActionableTasks = function() {
+    const arrActionables = [];
+    directory.get().forEach(function(strID) {
+        const item = retrieveItem(strID);
+        if (item.isActionable === true) {
+            arrActionables.push(item);
+        }
+    })
+    return arrActionables;
 }
 
-const _lookupItem = function(id) {
-    return arrItems.find(item => item.id === id);
+const logDatabase = function() {
+    console.table(directory.get());
+    const arr = [];
+    directory.get().forEach(function(strID) {
+        arr.push(retrieveItem(strID));
+    })
+    console.table(arr);
 }
 
 const lookupKey = function (strID,property) {
-    const obj = _lookupItem(strID);
+    const obj = retrieveItem(strID);
+    if (!obj) {return};
     return obj[property];
 }
 
 const modify = function(strID,property,value) {
-    const obj = _lookupItem(strID);
+    const obj = retrieveItem(strID);
+    if (!obj) {return};
     obj[property] = value;
+    storeItem(obj);
 }
 
-const newProject = function(name) {
-    const project = new Project(name);
-    arrItems.push(project);
-    storeLocal();
-    return project;
-}
-
-const newTask = function(name) {
-    const task = new Task(name);
-    arrItems.push(task);
-    storeLocal();
-    return task;
+const newItem = function(obj) {
+    storeItem(obj);
+    directory.add(obj.id);
 }
 
 const remove = function (strID) {
-    const obj = _lookupItem(strID);
-    if (!(obj)) {return;};
-    const index = arrItems.indexOf(obj);
-    arrItems.splice(index,1);
-    storeLocal();
+    if (localStorage[strID]) {
+        localStorage.removeItem(strID);
+        directory.remove(strID);
+    }
 }
 
-const show = function () {
-    console.table(arrItems);
+const retrieveItem = function(strID) {
+    if (localStorage[strID]) { 
+        return JSON.parse(localStorage[strID]);
+    }
 }
 
-const storeLocal = function() {
-    localStorage.database = JSON.stringify(arrItems);
+
+const storeItem = function(obj) {
+    localStorage[obj.id] = JSON.stringify(obj);
 }
 
-export {getNextActions,
-        init,
+export {
+        logDatabase,
         lookupKey,
         modify,
-        newProject,
-        newTask,
+        newItem,
         remove,
-        show,
-        _lookupItem as returnItem, //For development testing purposes
+        retrieveItem,
+        getActionableTasks,
     };

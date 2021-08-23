@@ -1,5 +1,5 @@
 import * as dommy from './dommy.js';
-import * as storage from './storage.js';
+import * as core from './coreLogic.js';
 import * as elements from './elements.js';
 import footer from './footer.js';
 import './style.scss';
@@ -20,10 +20,12 @@ const renderTaskCard = function(obj) {
     return card;
 }
         
-const newButtonClick2 = function() {
-    console.log("What? (Index)");
+const populateNextActions = function() {
+    const arrNextActions = core.getNextActions();
+    arrNextActions.forEach(function(task) {
+        nextActionsPane.appendCard(renderTaskCard(task));
+    })
 }
-
 
 
 // Creating the layout framework
@@ -47,13 +49,15 @@ dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
 
 const tempFill = (function() {
 
-    const testProj1 = storage.newProject("Build a house");
+    localStorage.clear();
+    core.newTask("Buy nails");
+
+    core.newTask("Measure dirt");
+    core.newTask("Climb ladder");
+
+    const testProj1 = core.newProject("Build a house");
     projectsPane.appendCard(renderTaskCard(testProj1));
 
-    const testTask1 = storage.newTask("Buy nails");
-        storage.modify(testTask1.id,"isActionable",true);
-
-    nextActionsPane.appendCard(renderTaskCard(testTask1));
 
 
 
@@ -80,12 +84,5 @@ const tempFill = (function() {
 
 })();
 
-
-
-//storage.init();
-
-storage.show();
-
-console.log(storage.lookupKey("1","name"));
-
-console.log(storage.getNextActions());
+core.logDatabase();
+populateNextActions();

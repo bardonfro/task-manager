@@ -5,15 +5,16 @@ let arrItems = [{name:"Test",id:"1",isActionable:true}];
 class Project {
     constructor (name) {
         this.name = name;
-        this.id = "p" + new Date().valueOf();
+        this.id = "p" + new Date().valueOf() + Math.random();
     }
 }
 
 class Task {
     constructor(name) {
         this.name = name;
-        this.id = "t" + new Date().valueOf();
+        this.id = "t" + new Date().valueOf() + Math.random();
         this.isActionable = true;
+        this.isComplete = false;
     }
 }
 
@@ -27,6 +28,10 @@ const deleteItem = function(strID) {
 
 const getNextActions = function () {
     return storage.getActionableTasks();
+}
+
+const logDatabase = function() {
+    storage.logDatabase();
 }
 
 const newProject = function(name) {
@@ -51,6 +56,7 @@ const show = function () {
 
 export {deleteItem,
         getNextActions,
+        logDatabase,
         newProject,
         newTask,
         setField,
