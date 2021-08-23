@@ -1,6 +1,6 @@
 import * as dommy from './dommy.js';
 import * as core from './coreLogic.js';
-import * as elements from './elements.js';
+import * as render from './elements.js';
 import footer from './footer.js';
 import './style.scss';
 
@@ -9,7 +9,7 @@ const populateNextActions = function() {
     nextActionsPane.clear();
     const arrNextActions = core.getNextActions();
     arrNextActions.forEach(function(task) {
-        nextActionsPane.appendCard(elements.taskCard(task));
+        nextActionsPane.appendCard(render.taskCard(task));
     })
 }
 
@@ -17,7 +17,7 @@ const populateProjects = function() {
     projectsPane.clear();
     const arrProjects = core.getProjects();
     arrProjects.forEach(function(project) {
-        projectsPane.appendCard(elements.projectCard(project));
+        projectsPane.appendCard(render.projectCard(project));
     })
 }
 
@@ -36,29 +36,19 @@ dommy.appendChildren(pageWrapper,header,contentWrapper,footer());
 
 
 // Filling the workspace
-const projectsPane = elements.pane({name:"Projects",id:"projects-pane"});
+const projectsPane = render.pane({name:"Projects",id:"projects-pane"});
     projectsPane.addNew = function(str) {
         core.newProject(str);
         populateProjects();
     } 
 
-const nextActionsPane = elements.pane({name:"Next Actions",id:"next-actions-pane"});
+const nextActionsPane = render.pane({name:"Next Actions",id:"next-actions-pane"});
     nextActionsPane.addNew = function(str) {
         core.newTask(str);
         populateNextActions();
     }
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
 
-const tempFill = function() {
-
-    localStorage.clear();
-    
-    core.newTask("Buy nails");
-    core.newTask("Measure dirt");
-    core.newTask("Climb ladder");
-
-    const testProj1 = core.newProject("Build a house");
-};
 
 core.logDatabase();
 populateNextActions();

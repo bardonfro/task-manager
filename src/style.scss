@@ -23,6 +23,7 @@ div {
 
 #header {
     height: 2em;
+    flex-shrink: 0;
 }
 
 #content {
@@ -45,6 +46,7 @@ div {
 }
 
 .pane {
+    max-height: 100%;
     margin-right: .3rem;
     padding:.3em;
     display: flex;
@@ -67,7 +69,25 @@ div {
 }
 
 .card {
-    min-height:100px;
+    min-height:10px;
+    margin: .5em 0em;
+    display:block;
+    flex-shrink: 0;
+
+    .icon-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
+
+        .icon {
+            height: 1em;
+            width: 1em;
+            border-radius: 20%;
+        }
+        .complete {
+            flex-grow: 0;
+        }
+    }
+    
 }
 
 

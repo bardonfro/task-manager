@@ -1,3 +1,5 @@
+import * as click from './clickHandlers.js';
+
 const renderFormAdd = function() {
     const formWrapper = document.createElement('div');
         formWrapper.classList = "pane-form-wrapper";
@@ -52,7 +54,7 @@ const renderPane = function(obj) {
         pane.content.appendChild(card);
 
     }
-        pane.clear = function () {
+    pane.clear = function () {
         pane.content.textContent = "";
     }
     
@@ -84,6 +86,17 @@ const renderTaskCard = function(obj) {
         title.classList = "card-title";
         card.appendChild(title);
     
+    const iconWrapper = document.createElement('div');
+        iconWrapper.classList = "icon-wrapper";
+        card.appendChild(iconWrapper);
+    
+    const completeIcon = document.createElement('div');
+        completeIcon.classList = "icon complete";
+        iconWrapper.appendChild(completeIcon);
+        completeIcon.onclick = function(e) {
+            click.taskComplete(card);
+        }
+
     return card;
 }
 
