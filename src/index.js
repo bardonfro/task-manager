@@ -1,6 +1,7 @@
 import * as dommy from './dommy.js';
 import * as core from './coreLogic.js';
 import * as render from './elements.js';
+import * as displayRegistry from './displayRegistry.js';
 import footer from './footer.js';
 import './style.scss';
 
@@ -50,6 +51,7 @@ const nextActionsPane = render.pane({name:"Next Actions",id:"next-actions-pane"}
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
 
 
-core.logDatabase();
 populateNextActions();
 populateProjects();
+
+displayRegistry.log();

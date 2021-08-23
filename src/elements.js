@@ -1,4 +1,5 @@
 import * as click from './clickHandlers.js';
+import * as displayRegistry from './displayRegistry.js';
 
 const renderFormAdd = function() {
     const formWrapper = document.createElement('div');
@@ -72,6 +73,7 @@ const renderProjectCard = function(obj) {
         title.classList = "card-title";
         card.appendChild(title);
     
+    displayRegistry.add(obj.id,card);
     return card;
 }
 
@@ -96,7 +98,7 @@ const renderTaskCard = function(obj) {
         completeIcon.onclick = function(e) {
             click.taskComplete(card);
         }
-
+    displayRegistry.add(obj.id,card);
     return card;
 }
 

@@ -85,9 +85,14 @@ div {
         }
         .complete {
             flex-grow: 0;
+            order: 10;
         }
     }
     
+}
+
+.card.complete {
+    background-color: aquamarine;
 }
 
 
