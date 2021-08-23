@@ -53,41 +53,16 @@ const projectsPane = elements.pane({name:"Projects",id:"projects-pane"});
 const nextActionsPane = elements.pane({name:"Next Actions",id:"next-actions-pane"});
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
 
-const tempFill = (function() {
+const tempFill = function() {
 
     localStorage.clear();
+    
     core.newTask("Buy nails");
-
     core.newTask("Measure dirt");
     core.newTask("Climb ladder");
 
     const testProj1 = core.newProject("Build a house");
-
-
-
-
-    // const testCard = renderTaskCard({name:"Get a Thing"});
-    // const test2 = renderTaskCard({name:"Do a Thing"});
-    // const test3 = renderTaskCard({name:"Wish a Thing"});
-    // const test4 = renderTaskCard({name:"See a Thing"});
-
-    // projectsPane.appendCard(testCard);
-    // projectsPane.appendCard(test2);
-    // projectsPane.appendCard(test3);
-    // projectsPane.appendCard(test4);
-
-
-    // const ac1 = renderTaskCard({name:"Whack a Thing"});
-    // const ac2 = renderTaskCard({name:"Hang a Thing"});
-    // const ac3 = renderTaskCard({name:"Throw a Thing"});
-    // const ac4 = renderTaskCard({name:"Catch a Big Hairy Thing"});
-
-    // nextActionsPane.appendCard(ac1);
-    // nextActionsPane.appendCard(ac2);
-    // nextActionsPane.appendCard(ac3);
-    // nextActionsPane.appendCard(ac4);
-
-})();
+};
 
 core.logDatabase();
 populateNextActions();
