@@ -21,6 +21,7 @@ const renderTaskCard = function(obj) {
 }
         
 const populateNextActions = function() {
+    nextActionsPane.clear();
     const arrNextActions = core.getNextActions();
     arrNextActions.forEach(function(task) {
         nextActionsPane.appendCard(renderTaskCard(task));
@@ -28,6 +29,7 @@ const populateNextActions = function() {
 }
 
 const populateProjects = function() {
+    projectsPane.clear();
     const arrProjects = core.getProjects();
     arrProjects.forEach(function(project) {
         projectsPane.appendCard(renderTaskCard(project));
@@ -50,7 +52,16 @@ dommy.appendChildren(pageWrapper,header,contentWrapper,footer());
 
 // Filling the workspace
 const projectsPane = elements.pane({name:"Projects",id:"projects-pane"});
+    projectsPane.addNew = function(str) {
+        core.newProject(str);
+        populateProjects();
+    } 
+
 const nextActionsPane = elements.pane({name:"Next Actions",id:"next-actions-pane"});
+    nextActionsPane.addNew = function(str) {
+        core.newTask(str);
+        populateNextActions();
+    }
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
 
 const tempFill = function() {

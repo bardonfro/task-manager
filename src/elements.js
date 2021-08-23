@@ -19,10 +19,13 @@ const renderFormAdd = function() {
 
         form.appendChild(textInput);
         form.appendChild(submit);
-        form.onsubmit = function(e){console.log(e); textInput.value = ""; return false;};   
+        form.onsubmit = function(e){
+            e.target.parentElement.parentElement.addNew(e.target[0].value);
+            textInput.value = "";
+            return false;};   
     formWrapper.appendChild(form);
         
-    return form;
+    return formWrapper;
 }
 
 const renderPane = function(obj) {
@@ -51,7 +54,12 @@ const renderPane = function(obj) {
     
     pane.appendCard = function (card) {
         pane.content.appendChild(card);
+
     }
+        pane.clear = function () {
+        pane.content.textContent = "";
+    }
+    
 
     return pane;
 }

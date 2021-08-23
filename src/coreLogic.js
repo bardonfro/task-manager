@@ -1,4 +1,5 @@
 import * as storage from './storage.js'
+import * as index from './index.js'
 
 let arrItems = [{name:"Test",id:"1",isActionable:true}];
 

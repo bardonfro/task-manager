@@ -88,7 +88,6 @@ const retrieveItem = function(strID) {
     }
 }
 
-
 const storeItem = function(obj) {
     localStorage[obj.id] = JSON.stringify(obj);
 }
