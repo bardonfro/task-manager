@@ -1,5 +1,6 @@
-let items = [{name:"Test",id:"1"}];
-let tasks = [];
+import * as storage from './storage.js'
+
+let arrItems = [{name:"Test",id:"1",isActionable:true}];
 
 class Project {
     constructor (name) {
@@ -12,45 +13,46 @@ class Task {
     constructor(name) {
         this.name = name;
         this.id = "t" + new Date().valueOf();
+        this.isActionable = true;
     }
 }
 
-const _lookupItem = function(id) {
-    return items.find(item => item.id === id);
+const deleteItem = function(strID) {
+    if (prompt("Are you sure you want to delete [this] item?")) {
+        storage.remove(strID);
+    }
+
+    //Tell display to remove the item from all panes and places
 }
 
-const lookupKey = function (strID,property) {
-    const obj = _lookupItem(strID);
-    return obj[property];
+const getNextActions = function () {
+    return storage.getActionableTasks();
 }
-
 
 const newProject = function(name) {
     const project = new Project(name);
-    items.push(project);
+    storage.newItem(project);
     return project;
 }
 
 const newTask = function(name) {
     const task = new Task(name);
-    items.push(task);
+    storage.newItem(task);
     return task;
 }
 
-const returnItem = function(id) {
-    // I would like to not return the actual item (for closure)
-    return _lookupItem(id);
+const setField = function(strID,field,value) {
+    storage.modify(strID,field,value);
 }
 
-
-const log = function() {
-    console.table(items);
-
+const show = function () {
+    console.table(arrItems);
 }
 
-export {
-    lookupKey,
-    newProject,
-    newTask,
-    log,
-}
+export {deleteItem,
+        getNextActions,
+        newProject,
+        newTask,
+        setField,
+        show,
+    };
