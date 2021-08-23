@@ -30,6 +30,10 @@ const getNextActions = function () {
     return storage.getActionableTasks();
 }
 
+const getProjects = function() {
+    return storage.getProjects();
+}
+
 const logDatabase = function() {
     storage.logDatabase();
 }
@@ -56,6 +60,7 @@ const show = function () {
 
 export {deleteItem,
         getNextActions,
+        getProjects,
         logDatabase,
         newProject,
         newTask,

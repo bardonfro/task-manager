@@ -37,6 +37,17 @@ const getActionableTasks = function() {
     return arrActionables;
 }
 
+const getProjects = function() {
+    const arrProjects = [];
+    directory.get().forEach(function(strID) {
+        const item = retrieveItem(strID);
+        if (item.id[0] === "p") {
+            arrProjects.push(item);
+        }
+    })
+    return arrProjects;
+}
+
 const logDatabase = function() {
     console.table(directory.get());
     const arr = [];
@@ -90,4 +101,5 @@ export {
         remove,
         retrieveItem,
         getActionableTasks,
+        getProjects,
     };

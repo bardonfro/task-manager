@@ -27,6 +27,12 @@ const populateNextActions = function() {
     })
 }
 
+const populateProjects = function() {
+    const arrProjects = core.getProjects();
+    arrProjects.forEach(function(project) {
+        projectsPane.appendCard(renderTaskCard(project));
+    })
+}
 
 // Creating the layout framework
 
@@ -56,7 +62,6 @@ const tempFill = (function() {
     core.newTask("Climb ladder");
 
     const testProj1 = core.newProject("Build a house");
-    projectsPane.appendCard(renderTaskCard(testProj1));
 
 
 
@@ -86,3 +91,4 @@ const tempFill = (function() {
 
 core.logDatabase();
 populateNextActions();
+populateProjects();
