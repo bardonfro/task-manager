@@ -1,3 +1,7 @@
+
+$pane-background: rgb(142, 153, 176);
+$pane-content-background: rgb(255, 255, 255);
+
 html, body {
     width:100%;
     height: 100%;
@@ -12,6 +16,39 @@ div {
     border: 1px solid black;
     //margin: 2px;
     box-sizing: border-box;
+}
+
+.modal-background {
+    background-color: rgba(123, 123, 123, 0.694);
+    width:100%;
+    height:100%;
+    position:fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-window {
+    background-color: $pane-background;
+
+    .title-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 {
+            margin: .1em .2em;
+        }
+
+        button.close {
+            height: 1.5em;
+            width: 1.5em;
+            margin: .1em;
+        }
+    }
 }
 
 #page-wrapper{
@@ -55,6 +92,7 @@ div {
     max-height: 100%;
     margin-right: .3rem;
     padding:.3em;
+    background-color: $pane-background;
     display: flex;
     flex-direction: column;
 
@@ -70,6 +108,7 @@ div {
         flex-direction: column;
         justify-content: flex-start;
         overflow: auto;
+        background-color: $pane-content-background;
     }
 
     form {

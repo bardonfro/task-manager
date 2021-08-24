@@ -1,35 +1,62 @@
 import * as click from './clickHandlers.js';
 import * as displayRegistry from './displayRegistry.js';
+import * as dommy from './dommy.js';
 import * as core from './coreLogic.js';
 
-const renderFormAdd = function(pane) {
-    const formWrapper = document.createElement('div');
-        formWrapper.classList = "pane-form-wrapper";
-    const form = document.createElement('form');
-        const textInputWrapper = document.createElement('div');
-            textInputWrapper.classList = "text-input-wrapper";
-        const textInput = document.createElement('input');
-            textInput.type = "text";
-            textInput.placeholder = "Add New Item";
-            textInput.name = "Input Name";
-            textInput.required = true;
-            textInput.classList = "text-input";
-        const submit = document.createElement('input');
-            submit.type = "submit";
-            submit.value = "+";
-            submit.classList = "submit";
+const renderCard = function(paramObj) {
+    const card = document.createElement('div');
+    card.classList = `card ${paramObj.type}-card`;
+    card.dataset.id = paramObj.id;
 
-        textInputWrapper.appendChild(textInput);
-        form.appendChild(textInputWrapper);
-        form.appendChild(submit);
-        form.onsubmit = function(e){
-            pane.submitForm(e.target[0].value);
-            textInput.value = "";
-            pane.refresh();
-            return false;}
-    formWrapper.appendChild(form);
+    
+    const title = document.createElement('p');
+    title.textContent = paramObj.name;
+    title.classList = "card-title";
+    card.appendChild(title);
+    
+    if (paramObj.isComplete === true) {
+        card.classList.add("complete");
+    }
+    
+    if (paramObj.type === "task") {
+        const iconWrapper = document.createElement('div');
+            iconWrapper.classList = "icon-wrapper";
+            card.appendChild(iconWrapper);
         
-    return formWrapper;
+        const completeIcon = document.createElement('div');
+            completeIcon.classList = "icon complete";
+            iconWrapper.appendChild(completeIcon);
+            completeIcon.onclick = function(e) {
+                click.taskComplete(card);
+            }
+    }
+    
+    displayRegistry.add(paramObj.id,card);
+    return card;
+}
+
+const renderModal = function (paramObj) {
+    if (!paramObj || !(typeof(paramObj === 'object'))) {return;}
+    const modalBackground = dommy.el('div.modal-background');
+    document.body.appendChild(modalBackground);
+    modalBackground.close = function() {
+        modalBackground.parentElement.removeChild(modalBackground);
+    }
+
+    const modalWindow = dommy.el('div.modal-window');
+        const titleBar = dommy.el('div.title-bar');
+            const closeBtn = dommy.el('button.close');
+                closeBtn.addEventListener('click',modalBackground.close);
+        dommy.appendChildren(titleBar,dommy.el('h3.title',paramObj.name),closeBtn)
+        const contentWrapper = dommy.el('div.contentWrapper');
+
+
+    
+        dommy.appendChildren(modalWindow,titleBar,contentWrapper)
+        modalBackground.appendChild(modalWindow);
+
+    
+
 }
 
 const renderPane = function(obj) {
@@ -54,7 +81,7 @@ const renderPane = function(obj) {
         pane.appendChild(paneContent);
         pane.content = paneContent;
     
-    pane.appendChild(renderFormAdd(pane));
+    pane.appendChild(renderPaneForm(pane));
 
     pane.contentType = obj.contentType;
     
@@ -105,6 +132,36 @@ const renderPane = function(obj) {
     return pane;
 }
 
+const renderPaneForm = function(pane) {
+    const formWrapper = document.createElement('div');
+        formWrapper.classList = "pane-form-wrapper";
+    const form = document.createElement('form');
+        const textInputWrapper = document.createElement('div');
+            textInputWrapper.classList = "text-input-wrapper";
+        const textInput = document.createElement('input');
+            textInput.type = "text";
+            textInput.placeholder = "Add New Item";
+            textInput.name = "Input Name";
+            textInput.required = true;
+            textInput.classList = "text-input";
+        const submit = document.createElement('input');
+            submit.type = "submit";
+            submit.value = "+";
+            submit.classList = "submit";
+
+        textInputWrapper.appendChild(textInput);
+        form.appendChild(textInputWrapper);
+        form.appendChild(submit);
+        form.onsubmit = function(e){
+            pane.submitForm(e.target[0].value);
+            textInput.value = "";
+            pane.refresh();
+            return false;}
+    formWrapper.appendChild(form);
+        
+    return formWrapper;
+}
+
 const renderProjectCard = function(obj) {
     console.log("Used old renderProjectCard");
     return renderCard(obj);
@@ -116,40 +173,11 @@ const renderTaskCard = function(obj) {
     return renderCard(obj);
 }
 
-const renderCard = function(paramObj) {
-    const card = document.createElement('div');
-    card.classList = `card ${paramObj.type}-card`;
-    card.dataset.id = paramObj.id;
-
-    
-    const title = document.createElement('p');
-    title.textContent = paramObj.name;
-    title.classList = "card-title";
-    card.appendChild(title);
-    
-    if (paramObj.isComplete === true) {
-        card.classList.add("complete");
-    }
-    
-    if (paramObj.type === "task") {
-        const iconWrapper = document.createElement('div');
-            iconWrapper.classList = "icon-wrapper";
-            card.appendChild(iconWrapper);
-        
-        const completeIcon = document.createElement('div');
-            completeIcon.classList = "icon complete";
-            iconWrapper.appendChild(completeIcon);
-            completeIcon.onclick = function(e) {
-                click.taskComplete(card);
-            }
-    }
-    
-    displayRegistry.add(paramObj.id,card);
-    return card;
-}
 
 
 export {
+    renderCard as card,
+    renderModal as modal,
     renderPane as pane,
     renderProjectCard as projectCard,
     renderTaskCard as taskCard,
