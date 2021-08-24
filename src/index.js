@@ -6,29 +6,29 @@ import footer from './footer.js';
 import './style.scss';
 
 
-const renderPage = (function () {
+
     
-    // Creating the layout framework
+// Creating the layout framework
 
-    const pageWrapper = dommy.el("div#page-wrapper");
-    dommy.appendChildren(document.body,pageWrapper);
+const pageWrapper = dommy.el("div#page-wrapper");
+dommy.appendChildren(document.body,pageWrapper);
 
-    const header = dommy.el("div#header","Header");
-    const contentWrapper = dommy.el("div.#content");
-    const workspaceWrapper = dommy.el("div#workspace");
-    const paneSelection = dommy.el("div#pane-selector","Pane Selector");
+const header = dommy.el("div#header","Header");
+const contentWrapper = dommy.el("div.#content");
+const workspaceWrapper = dommy.el("div#workspace");
+const paneSelection = dommy.el("div#pane-selector","Pane Selector");
 
-    dommy.appendChildren(contentWrapper,workspaceWrapper, paneSelection)
-    dommy.appendChildren(pageWrapper,header,contentWrapper,footer());
+dommy.appendChildren(contentWrapper,workspaceWrapper, paneSelection)
+dommy.appendChildren(pageWrapper,header,contentWrapper,footer());
 
 
-    // Filling the workspace
-    const projectsPane = render.pane({name:"Projects",id:"projects-pane",contentType:"projects"});
-    const nextActionsPane = render.pane({name:"Next Actions",id:"next-actions-pane",contentType:"actionableTasks"});
-    const completedPane = render.pane({name:"Completed",id:"completed-pane",contentType:"completedTasks"});
+// Filling the workspace
+const projectsPane = render.pane({name:"Projects",id:"projects-pane",contentType:"projects"});
+const nextActionsPane = render.pane({name:"Next Actions",id:"next-actions-pane",contentType:"actionableTasks"});
+const completedPane = render.pane({name:"Completed",id:"completed-pane",contentType:"completedTasks"});
 
-    dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane,completedPane);
-})();
+dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane,completedPane);
+
 
 const modify = function(strID,field,value) {
     let action = function(){return};
