@@ -41,6 +41,12 @@ div {
     height: 100%;
 }
 
+#completed-pane {
+    .pane-form-wrapper {
+        display: none;
+    }
+}
+
 #pane-selector {
     flex-grow: 0;
 }
@@ -64,6 +70,14 @@ div {
         flex-direction: column;
         justify-content: flex-start;
         overflow: auto;
+    }
+
+    form {
+        display:flex;
+
+        .text-input {
+            width: 100%;
+        }
     }
 
 }

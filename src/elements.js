@@ -5,6 +5,8 @@ const renderFormAdd = function() {
     const formWrapper = document.createElement('div');
         formWrapper.classList = "pane-form-wrapper";
     const form = document.createElement('form');
+        const textInputWrapper = document.createElement('div');
+            textInputWrapper.classList = "text-input-wrapper";
         const textInput = document.createElement('input');
             textInput.type = "text";
             textInput.placeholder = "Add New Item";
@@ -16,7 +18,8 @@ const renderFormAdd = function() {
             submit.value = "+";
             submit.classList = "submit";
 
-        form.appendChild(textInput);
+        textInputWrapper.appendChild(textInput);
+        form.appendChild(textInputWrapper);
         form.appendChild(submit);
         form.onsubmit = function(e){
             e.target.parentElement.parentElement.addNew(e.target[0].value);
