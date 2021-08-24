@@ -5,6 +5,7 @@ class Project {
     constructor (name) {
         this.name = name;
         this.id = "p" + new Date().valueOf() + Math.random();
+        this.type = "project";
     }
 }
 
@@ -12,6 +13,7 @@ class Task {
     constructor(name) {
         this.name = name;
         this.id = "t" + new Date().valueOf() + Math.random();
+        this.type = "task";
         this.isActionable = true;
         this.isComplete = false;
     }

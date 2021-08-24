@@ -5,28 +5,28 @@ import * as displayRegistry from './displayRegistry.js';
 import footer from './footer.js';
 import './style.scss';
 
-const populateCompleted = function() {
-    completedPane.clear()
-    const arrCompleted = core.getCompletedTasks();
-    arrCompleted.forEach(function(task) {
-        completedPane.appendCard(render.taskCard(task));
-    })
-}
-const populateNextActions = function() {
-    nextActionsPane.clear();
-    const arrNextActions = core.getActionableTasks();
-    arrNextActions.forEach(function(task) {
-        nextActionsPane.appendCard(render.taskCard(task));
-    })
-}
+// const populateCompleted = function() {
+//     completedPane.clear()
+//     const arrCompleted = core.getCompletedTasks();
+//     arrCompleted.forEach(function(task) {
+//         completedPane.appendCard(render.taskCard(task));
+//     })
+// }
+// const populateNextActions = function() {
+//     nextActionsPane.clear();
+//     const arrNextActions = core.getActionableTasks();
+//     arrNextActions.forEach(function(task) {
+//         nextActionsPane.appendCard(render.taskCard(task));
+//     })
+// }
 
-const populateProjects = function() {
-    projectsPane.clear();
-    const arrProjects = core.getProjects();
-    arrProjects.forEach(function(project) {
-        projectsPane.appendCard(render.projectCard(project));
-    })
-}
+// const populateProjects = function() {
+//     projectsPane.clear();
+//     const arrProjects = core.getProjects();
+//     arrProjects.forEach(function(project) {
+//         projectsPane.appendCard(render.projectCard(project));
+//     })
+// }
 
 const modify = function(strID,field,value) {
     let action = function(){return};
@@ -42,8 +42,9 @@ const modify = function(strID,field,value) {
                     element.classList.remove("complete");
                 }
             }
-            populateNextActions();
-            populateCompleted();
+            nextActionsPane.refresh();
+            completedPane.refresh();
+            break;
     
     }
 
@@ -65,29 +66,23 @@ dommy.appendChildren(pageWrapper,header,contentWrapper,footer());
 
 
 // Filling the workspace
-const projectsPane = render.pane({name:"Projects",id:"projects-pane"});
+const projectsPane = render.pane({name:"Projects",id:"projects-pane",contentType:"projects"});
     projectsPane.addNew = function(str) {
         core.newProject(str);
         populateProjects();
     } 
 
-const nextActionsPane = render.pane({name:"Next Actions",id:"next-actions-pane"});
+const nextActionsPane = render.pane({name:"Next Actions",id:"next-actions-pane",contentType:"actionableTasks"});
     nextActionsPane.addNew = function(str) {
         core.newTask(str);
         populateNextActions();
     }
 
-const completedPane = render.pane({name:"Completed",id:"completed-pane"});
+const completedPane = render.pane({name:"Completed",id:"completed-pane",contentType:"completedTasks"});
     completedPane.addNew = function() {
         console.log("You cannot add a new item to the Completed Pane");
     }
 
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane,completedPane);
-
-
-populateNextActions();
-populateProjects();
-
-nextActionsPane.removeCard("005");
 
 export {modify}
