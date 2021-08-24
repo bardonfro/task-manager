@@ -116,22 +116,22 @@ const renderTaskCard = function(obj) {
     return renderCard(obj);
 }
 
-const renderCard = function(obj) {
+const renderCard = function(paramObj) {
     const card = document.createElement('div');
-    card.classList = `card ${obj.type}-card`;
-    card.dataset.id = obj.id;
+    card.classList = `card ${paramObj.type}-card`;
+    card.dataset.id = paramObj.id;
 
     
     const title = document.createElement('p');
-    title.textContent = obj.name;
+    title.textContent = paramObj.name;
     title.classList = "card-title";
     card.appendChild(title);
     
-    if (obj.isComplete === true) {
+    if (paramObj.isComplete === true) {
         card.classList.add("complete");
     }
     
-    if (obj.type === "task") {
+    if (paramObj.type === "task") {
         const iconWrapper = document.createElement('div');
             iconWrapper.classList = "icon-wrapper";
             card.appendChild(iconWrapper);
@@ -144,7 +144,7 @@ const renderCard = function(obj) {
             }
     }
     
-    displayRegistry.add(obj.id,card);
+    displayRegistry.add(paramObj.id,card);
     return card;
 }
 
