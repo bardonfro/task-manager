@@ -30,11 +30,23 @@ const getActionableTasks = function() {
     const arrActionables = [];
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
-        if (item.isActionable === true) {
+        if (item.isActionable === true &&
+            item.isComplete === false) {
             arrActionables.push(item);
         }
-    })
+    });
     return arrActionables;
+}
+
+const getCompletedTasks = function() {
+    const arrCompleted = [];
+    directory.get().forEach(function(strID) {
+        const item = retrieveItem(strID);
+        if (item.isComplete === true) {
+            arrCompleted.push(item);
+        }
+    });
+    return arrCompleted;
 }
 
 const getProjects = function() {
@@ -44,7 +56,7 @@ const getProjects = function() {
         if (item.id[0] === "p") {
             arrProjects.push(item);
         }
-    })
+    });
     return arrProjects;
 }
 
@@ -100,5 +112,6 @@ export {
         remove,
         retrieveItem,
         getActionableTasks,
+        getCompletedTasks, 
         getProjects,
     };

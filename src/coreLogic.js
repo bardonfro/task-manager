@@ -1,8 +1,6 @@
 import * as storage from './storage.js'
 import * as index from './index.js'
 
-let arrItems = [{name:"Test",id:"1",isActionable:true}];
-
 class Project {
     constructor (name) {
         this.name = name;
@@ -27,7 +25,11 @@ const deleteItem = function(strID) {
     //Tell display to remove the item from all panes and places
 }
 
-const getNextActions = function () {
+const getCompletedTasks = function() {
+    return storage.getCompletedTasks();
+}
+
+const getActionableTasks = function () {
     return storage.getActionableTasks();
 }
 
@@ -53,18 +55,29 @@ const newTask = function(name) {
 
 const setField = function(strID,field,value) {
     storage.modify(strID,field,value);
+    index.modify(strID,field,value);
 }
 
-const show = function () {
-    console.table(arrItems);
+const toggleIsComplete = function(strID) {
+    const item = storage.retrieveItem(strID);
+    let value;
+    if (item.isComplete) {
+        value = false
+    } else {
+        value = true;
+    }
+
+    setField(strID,"isComplete",value);
+
 }
 
 export {deleteItem,
-        getNextActions,
+        getCompletedTasks,
+        getActionableTasks,
         getProjects,
         logDatabase,
         newProject,
         newTask,
         setField,
-        show,
+        toggleIsComplete,
     };

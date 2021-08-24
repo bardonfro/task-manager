@@ -5,10 +5,16 @@ import * as displayRegistry from './displayRegistry.js';
 import footer from './footer.js';
 import './style.scss';
 
-
+const populateCompleted = function() {
+    completedPane.clear()
+    const arrCompleted = core.getCompletedTasks();
+    arrCompleted.forEach(function(task) {
+        completedPane.appendCard(render.taskCard(task));
+    })
+}
 const populateNextActions = function() {
     nextActionsPane.clear();
-    const arrNextActions = core.getNextActions();
+    const arrNextActions = core.getActionableTasks();
     arrNextActions.forEach(function(task) {
         nextActionsPane.appendCard(render.taskCard(task));
     })
@@ -20,6 +26,28 @@ const populateProjects = function() {
     arrProjects.forEach(function(project) {
         projectsPane.appendCard(render.projectCard(project));
     })
+}
+
+const modify = function(strID,field,value) {
+    let action = function(){return};
+
+    switch (field) {
+        case "isComplete":
+            if (value === true) {
+                action = function(element) {
+                    element.classList.add("complete");
+                }
+            } else {
+                action = function(element) {
+                    element.classList.remove("complete");
+                }
+            }
+            populateNextActions();
+            populateCompleted();
+    
+    }
+
+    displayRegistry.read(strID).forEach(function(element) {action(element)});
 }
 
 // Creating the layout framework
@@ -48,10 +76,18 @@ const nextActionsPane = render.pane({name:"Next Actions",id:"next-actions-pane"}
         core.newTask(str);
         populateNextActions();
     }
-dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane);
+
+const completedPane = render.pane({name:"Completed",id:"completed-pane"});
+    completedPane.addNew = function() {
+        console.log("You cannot add a new item to the Completed Pane");
+    }
+
+dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane,completedPane);
 
 
 populateNextActions();
 populateProjects();
 
-displayRegistry.log();
+nextActionsPane.removeCard("005");
+
+export {modify}

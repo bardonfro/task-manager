@@ -1,8 +1,7 @@
 import * as core from './coreLogic.js';
 
-const taskComplete = function (card) {
-    console.log("Task Complete:");
-    console.log(card);
+const taskComplete = function (element) {
+    core.toggleIsComplete(element.dataset.id);
 }
 
 export {

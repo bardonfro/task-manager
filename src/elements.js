@@ -53,10 +53,17 @@ const renderPane = function(obj) {
     
     pane.appendCard = function (card) {
         pane.content.appendChild(card);
-
     }
     pane.clear = function () {
         pane.content.textContent = "";
+    }
+    pane.removeCard = function(strID) {
+        console.log("Remove " + strID + " from " + title.textContent);
+        pane.content.childNodes.forEach(function(node) {
+            if (node.dataset.id === strID) {
+                pane.content.removeChild(node);
+            }
+        })
     }
     
 
@@ -67,6 +74,10 @@ const renderProjectCard = function(obj) {
     const card = document.createElement('div');
     card.classList = "card project-card";
     card.dataset.id = obj.id;
+
+    if (obj.isActionable === true) {
+        card.classList.add("complete");
+    }
 
     const title = document.createElement('p');
         title.textContent = obj.name;
@@ -82,6 +93,10 @@ const renderTaskCard = function(obj) {
     const card = document.createElement('div');
     card.classList = "card task-card";
     card.dataset.id = obj.id;
+
+    if (obj.isComplete === true) {
+        card.classList.add("complete");
+    }
 
     const title = document.createElement('p');
         title.textContent = obj.name;
