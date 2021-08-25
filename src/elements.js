@@ -70,23 +70,29 @@ const renderModal = function (paramObj) {
         dommy.appendChildren(dataPanel,parentProjectWrapper,description,taskListWrapper);
         
         if (paramObj.type === "project") {
-            taskListWrapper.textContent = "Here is a list of the tasks for this project:"    
+            taskListWrapper.textContent = "Here is a list of the tasks for this project:"
+            // This part needs help. Not working.
+            console.log(paramObj.tasks);
+            paramObj.tasks.forEach(function(taskID) {
+                taskListWrapper.appendChild(dommy.el('p',core.lookupKey(taskID,'name')))
+            });    
         }
 
         if (paramObj.type === 'task') {
+            const projectName = core.lookupKey(paramObj.project,'name')
             // Project Selector
-            parentProjectWrapper.appendChild(dommy.el('p','Project: ' + paramObj.project));
+            parentProjectWrapper.appendChild(dommy.el('p','Project: ' + projectName));
             const projectSelector = dommy.el('div.project-select');
                 projectSelector.appendChild(dommy.el('p',"Select Project"));
                 const projectDropdown = dommy.el('select');
-                projectDropdown.appendChild(dommy.el('option',(paramObj.project ? paramObj.project : "--none--")));
+                projectDropdown.appendChild(dommy.el('option',(paramObj.project ? projectName : "--none--")));
                 core.getProjects(200).forEach(function(project) {
                     const item = dommy.el('option',project.name);
                     item.strID = project.id;
                     projectDropdown.appendChild(item);
                 });
                 projectDropdown.addEventListener('change',function(e) {
-                    console.log(e.target.options[e.target.options.selectedIndex].strID);
+                    core.assignProject(paramObj.id,e.target.options[e.target.options.selectedIndex].strID);
                 })
             projectSelector.appendChild(projectDropdown);
             menuPanel.appendChild(projectSelector);

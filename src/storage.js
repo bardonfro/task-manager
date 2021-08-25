@@ -75,10 +75,14 @@ const lookupKey = function (strID,property) {
     return obj[property];
 }
 
-const modify = function(strID,property,value) {
+const modify = function(strID,property,value,isAppend) {
     const obj = retrieveItem(strID);
     if (!obj) {return};
-    obj[property] = value;
+    if (isAppend) {
+        obj[property].push(value);
+    } else {
+        obj[property] = value;
+    }
     storeItem(obj);
 }
 

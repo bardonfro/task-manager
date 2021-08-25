@@ -8,6 +8,7 @@ class Project {
         this.type = "project";
         this.domain = undefined;
         this.date = undefined;
+        this.tasks = [];
     }
 }
 
@@ -22,6 +23,13 @@ class Task {
         this.isActionable = true;
         this.isComplete = false;
     }
+}
+
+const assignProject = function(taskID,projectID) {
+    console.log(taskID);
+    console.log(projectID);
+    setField(taskID,'project',projectID);
+    setField(projectID,'tasks',taskID,true); 
 }
 
 const deleteItem = function(strID) {
@@ -46,6 +54,10 @@ const getProjects = function(num = 150) {
 
 const logDatabase = function() {
     storage.logDatabase();
+}
+
+const lookupKey = function(strID,key) {
+    return storage.lookupKey(strID,key)
 }
 
 const newProject = function(name) {
@@ -78,11 +90,13 @@ const toggleIsComplete = function(strID) {
 
 }
 
-export {deleteItem,
+export {assignProject,
+        deleteItem,
         getCompletedTasks,
         getActionableTasks,
         getProjects,
         logDatabase,
+        lookupKey,
         newProject,
         newTask,
         setField,
