@@ -53,6 +53,6 @@ const modify = function(strID,field,value) {
     displayRegistry.read(strID).forEach(function(element) {action(element)});
 }
 
-render.modal(core.getProjects()[0]);
+render.modal(core.getActionableTasks()[0]);
 
 export {modify}
