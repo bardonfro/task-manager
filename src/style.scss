@@ -129,7 +129,7 @@ div {
 
     .icon-wrapper {
         display: flex;
-        flex-direction: row-reverse;
+        justify-content: flex-start;
 
         .icon {
             height: 1em;
@@ -139,6 +139,7 @@ div {
         .complete {
             flex-grow: 0;
             order: 10;
+            justify-self: flex-end;
         }
     }
     
@@ -146,7 +147,9 @@ div {
 
 .card.complete {
     background-color: rgb(222, 220, 220);
-    text-decoration: line-through;
+    .card-title {
+        text-decoration: line-through;
+    }
 }
 
 

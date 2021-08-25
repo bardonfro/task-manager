@@ -6,6 +6,8 @@ class Project {
         this.name = name;
         this.id = "p" + new Date().valueOf() + Math.random();
         this.type = "project";
+        this.domain = undefined;
+        this.date = undefined;
     }
 }
 
@@ -14,6 +16,9 @@ class Task {
         this.name = name;
         this.id = "t" + new Date().valueOf() + Math.random();
         this.type = "task";
+        this.project = undefined;
+        this.domain = undefined;
+        this.date = undefined;
         this.isActionable = true;
         this.isComplete = false;
     }
@@ -27,16 +32,16 @@ const deleteItem = function(strID) {
     //Tell display to remove the item from all panes and places
 }
 
-const getCompletedTasks = function() {
-    return storage.getCompletedTasks();
+const getCompletedTasks = function(num = 50) {
+    return storage.getCompletedTasks(num);
 }
 
-const getActionableTasks = function () {
-    return storage.getActionableTasks();
+const getActionableTasks = function (num = 250) {
+    return storage.getActionableTasks(num);
 }
 
-const getProjects = function() {
-    return storage.getProjects();
+const getProjects = function(num = 150) {
+    return storage.getProjects(num);
 }
 
 const logDatabase = function() {

@@ -26,7 +26,7 @@ const directory = {
     },
 }
 
-const getActionableTasks = function() {
+const getActionableTasks = function(num) {
     const arrActionables = [];
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
@@ -35,10 +35,10 @@ const getActionableTasks = function() {
             arrActionables.push(item);
         }
     });
-    return arrActionables;
+    return arrActionables.sort().reverse().slice(0,num);
 }
 
-const getCompletedTasks = function() {
+const getCompletedTasks = function(num) {
     const arrCompleted = [];
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
@@ -46,10 +46,10 @@ const getCompletedTasks = function() {
             arrCompleted.push(item);
         }
     });
-    return arrCompleted;
+    return arrCompleted.sort().reverse().slice(0,num);
 }
 
-const getProjects = function() {
+const getProjects = function(num) {
     const arrProjects = [];
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
@@ -57,7 +57,7 @@ const getProjects = function() {
             arrProjects.push(item);
         }
     });
-    return arrProjects;
+    return arrProjects.sort().reverse().slice(0,num);
 }
 
 const logDatabase = function() {

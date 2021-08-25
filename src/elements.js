@@ -12,25 +12,29 @@ const renderCard = function(paramObj) {
     const title = document.createElement('p');
     title.textContent = paramObj.name;
     title.classList = "card-title";
-    card.appendChild(title);
     
     if (paramObj.isComplete === true) {
         card.classList.add("complete");
     }
     
-    if (paramObj.type === "task") {
-        const iconWrapper = document.createElement('div');
-            iconWrapper.classList = "icon-wrapper";
-            card.appendChild(iconWrapper);
-        
-        const completeIcon = document.createElement('div');
-            completeIcon.classList = "icon complete";
-            iconWrapper.appendChild(completeIcon);
-            completeIcon.onclick = function(e) {
-                click.taskComplete(card);
-            }
-    }
+    const iconWrapper = dommy.el('div.icon-wrapper');
     
+    const completeIcon = dommy.el('div.icon.complete',"\u2713");
+        completeIcon.onclick = function(e) {
+            click.taskComplete(card);
+        }
+    const editIcon = dommy.el('div.icon.edit',"E");
+        editIcon.onclick = function(e) {
+            renderModal(paramObj);
+        }
+    
+
+
+    if (paramObj.type === "task") {
+    }
+
+    dommy.appendChildren(iconWrapper,completeIcon,editIcon)
+    dommy.appendChildren(card,title,iconWrapper)
     displayRegistry.add(paramObj.id,card);
     return card;
 }
