@@ -53,11 +53,31 @@ const renderModal = function (paramObj) {
                 closeBtn.addEventListener('click',modalBackground.close);
         dommy.appendChildren(titleBar,dommy.el('h3.title',paramObj.name),closeBtn)
         const contentWrapper = dommy.el('div.contentWrapper');
-
-
-    
         dommy.appendChildren(modalWindow,titleBar,contentWrapper)
         modalBackground.appendChild(modalWindow);
+
+        const menuPanel = dommy.el('div.menu-panel');
+        const dataPanel = dommy.el('div.data-panel');
+        dommy.appendChildren(contentWrapper,dataPanel,menuPanel);
+
+        dommy.appendChildren(menuPanel,dommy.el('button','Test'));
+
+        const projectWrapper = dommy.el('p.project-wrapper');
+        const description = dommy.el('div.description','This is a big long description of the project. It is very verbose.');
+
+        const taskListWrapper = dommy.el('div.task-list-wrapper');
+        
+        dommy.appendChildren(dataPanel,projectWrapper,description,taskListWrapper);
+        
+        if (paramObj.type === "project") {
+            taskListWrapper.textContent = "Here is a list of the tasks for this project:"    
+        }
+
+        if (paramObj.type === 'task') {
+            projectWrapper.appendChild(dommy.el('p','Project: ' + paramObj.project));
+        }
+
+
 
     
 
