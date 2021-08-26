@@ -72,9 +72,9 @@ const newTask = function(name) {
     return task;
 }
 
-const setField = function(strID,field,value) {
-    storage.modify(strID,field,value);
-    index.modify(strID,field,value);
+const setField = function(strID,field,value,isAppend) {
+    storage.modify(strID,field,value,isAppend);
+    index.modify(strID,field,value,isAppend);
 }
 
 const toggleIsComplete = function(strID) {
