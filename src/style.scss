@@ -36,15 +36,21 @@ div {
     margin-top: -40%;
     max-width: 70%;
 
-    .title-bar {
+    .banner {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+    
+        .title-bar {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
 
-        h3 {
-            margin: .1em .2em;
+            h3 {
+                margin: .1em .2em;
+            }
         }
-
         button.close {
             height: 1.5em;
             width: 1.5em;

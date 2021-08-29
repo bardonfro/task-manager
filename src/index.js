@@ -6,6 +6,7 @@ import footer from './footer.js';
 import './style.scss';
 
 
+//render.modal(core.getActionableTasks()[0]);
 
     
 // Creating the layout framework
@@ -29,9 +30,33 @@ const completedPane = render.pane({name:"Completed",id:"completed-pane",contentT
 
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane,completedPane);
 
+const getParentCard = function(element) {
+    if (element.tagName === "BODY") {return;}
+    if (element.classList.contains("card")) {
+        return element;
+    } else {
+        return getParentCard(element.parentElement);
+    }
+}
+
+const getParentPane = function(element) {
+    if (element.tagName === "BODY") {return;}
+    if (element.classList.contains("pane")) {
+        return element;
+    } else {
+        return getParentPane(element.parentElement);
+    }
+}
+
+const renderChange = function (strID) {
+    displayRegistry.read(strID).forEach(function(element) {
+        getParentPane(element).refresh();
+    });
+}
 
 const modify = function(strID,field,value) {
-    let action = function(){return};
+
+    let action = function(){console.log("No action")};
 
     switch (field) {
         case "isComplete":
@@ -47,12 +72,15 @@ const modify = function(strID,field,value) {
             nextActionsPane.refresh();
             completedPane.refresh();
             break;
+        default:
+            //location.reload();
+            console.log('Ready for reload'); 
+            return;
     
     }
 
     displayRegistry.read(strID).forEach(function(element) {action(element)});
 }
 
-render.modal(core.getActionableTasks()[0]);
 
 export {modify}

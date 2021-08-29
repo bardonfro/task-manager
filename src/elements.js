@@ -1,28 +1,30 @@
-import * as click from './clickHandlers.js';
 import * as displayRegistry from './displayRegistry.js';
 import * as dommy from './dommy.js';
 import * as core from './coreLogic.js';
+import * as index from './index.js';
 
 const renderCard = function(paramObj) {
     const card = document.createElement('div');
     card.classList = `card ${paramObj.type}-card`;
     card.dataset.id = paramObj.id;
 
-    
-    const title = document.createElement('p');
-    title.textContent = paramObj.name;
-    title.classList = "card-title";
+    const titleWrapper = dommy.el('div.title-wrapper');
+        titleWrapper.appendChild(dommy.el('p.card-title',paramObj.name))
     
     if (paramObj.isComplete === true) {
         card.classList.add("complete");
+    }
+
+    if (paramObj.type === "task") {
+        // Display project 
     }
     
     const iconWrapper = dommy.el('div.icon-wrapper');
     
     const completeIcon = dommy.el('div.icon.complete',"\u2713");
-        completeIcon.onclick = function(e) {
-            click.taskComplete(card);
-        }
+        completeIcon.addEventListener('click', function(e) {
+            core.toggleIsComplete(paramObj.id);
+        });
     const editIcon = dommy.el('div.icon.edit',"E");
         editIcon.onclick = function(e) {
             renderModal(paramObj);
@@ -30,17 +32,19 @@ const renderCard = function(paramObj) {
     
 
 
-    if (paramObj.type === "task") {
+    if (paramObj.type === "task" && paramObj.project) {
+        titleWrapper.appendChild(renderParentProjectWrapper(paramObj));
     }
 
     dommy.appendChildren(iconWrapper,completeIcon,editIcon)
-    dommy.appendChildren(card,title,iconWrapper)
+    dommy.appendChildren(card,titleWrapper,iconWrapper)
     displayRegistry.add(paramObj.id,card);
     return card;
 }
 
 const renderModal = function (paramObj) {
     if (!paramObj || !(typeof(paramObj === 'object'))) {return;}
+
     const modalBackground = dommy.el('div.modal-background');
     document.body.appendChild(modalBackground);
     modalBackground.close = function() {
@@ -49,25 +53,32 @@ const renderModal = function (paramObj) {
 
     const modalWindow = dommy.el('div.modal-window');
     modalBackground.appendChild(modalWindow);
-        const titleBar = dommy.el('div.title-bar');
+    
+        const banner = dommy.el('div.banner');
+    
+            const titleBar = dommy.el('div.title-bar');
+                titleBar.appendChild(dommy.el('h3.title',paramObj.name));
+                if (paramObj.type === 'task' && paramObj.project) {
+                    titleBar.appendChild(renderParentProjectWrapper(paramObj));
+                }
             const closeBtn = dommy.el('button.close');
                 closeBtn.addEventListener('click',modalBackground.close);
-        dommy.appendChildren(titleBar,dommy.el('h3.title',paramObj.name),closeBtn)
+            
+        dommy.appendChildren(banner,titleBar,closeBtn)
         
         const contentWrapper = dommy.el('div.contentWrapper');
-        dommy.appendChildren(modalWindow,titleBar,contentWrapper)
+        dommy.appendChildren(modalWindow,banner,contentWrapper)
 
         const menuPanel = dommy.el('div.menu-panel');
         const dataPanel = dommy.el('div.data-panel');
         dommy.appendChildren(contentWrapper,dataPanel,menuPanel);
 
-        const parentProjectWrapper = dommy.el('p.project-wrapper');
-        dommy.appendChildren(menuPanel,dommy.el('button','Test'),parentProjectWrapper);
+        dommy.appendChildren(menuPanel,dommy.el('button','Test'));
 
         const description = dommy.el('div.description','This is a big long description of the project. It is very verbose.');
         const taskListWrapper = dommy.el('div.task-list-wrapper');
    
-        dommy.appendChildren(dataPanel,parentProjectWrapper,description,taskListWrapper);
+        dommy.appendChildren(dataPanel,description,taskListWrapper);
         
         if (paramObj.type === "project") {
             taskListWrapper.textContent = "Here is a list of the tasks for this project:"
@@ -79,20 +90,22 @@ const renderModal = function (paramObj) {
         }
 
         if (paramObj.type === 'task') {
-            const projectName = core.lookupKey(paramObj.project,'name')
             // Project Selector
-            parentProjectWrapper.appendChild(dommy.el('p','Project: ' + projectName));
             const projectSelector = dommy.el('div.project-select');
                 projectSelector.appendChild(dommy.el('p',"Select Project"));
                 const projectDropdown = dommy.el('select');
-                projectDropdown.appendChild(dommy.el('option',(paramObj.project ? projectName : "--none--")));
+                projectDropdown.appendChild(dommy.el('option',(paramObj.project ? core.lookupKey(paramObj.project,'name') : "--none--")));
                 core.getProjects(200).forEach(function(project) {
                     const item = dommy.el('option',project.name);
                     item.strID = project.id;
                     projectDropdown.appendChild(item);
                 });
                 projectDropdown.addEventListener('change',function(e) {
-                    core.assignProject(paramObj.id,e.target.options[e.target.options.selectedIndex].strID);
+                    const list = e.target.options;
+                    const selectedIndex = list.selectedIndex;
+                    const projectID = list[selectedIndex].strID;
+                    core.assignProject(paramObj.id,projectID);
+                    //core.assignProject(paramObj.id,e.target.options[e.target.options.selectedIndex].strID);
                 })
             projectSelector.appendChild(projectDropdown);
             menuPanel.appendChild(projectSelector);
@@ -207,6 +220,13 @@ const renderPaneForm = function(pane) {
     formWrapper.appendChild(form);
         
     return formWrapper;
+}
+
+const renderParentProjectWrapper = function(paramObj) {
+    const parentProjectWrapper = dommy.el('p.project-wrapper');
+    parentProjectWrapper.appendChild(dommy.el('p','Project: ' + core.lookupKey(paramObj.project,'name')));
+    return parentProjectWrapper;
+
 }
 
 const renderProjectCard = function(obj) {

@@ -1,6 +1,3 @@
-let arrItems = [{name:"Test",id:"1",isActionable:true}];
-let sdirectory = [];
-
 const directory = {
     add: function(strID) {
         const temp = this.get();
@@ -75,22 +72,25 @@ const lookupKey = function (strID,property) {
     return obj[property];
 }
 
-const modify = function(strID,property,value,isAppend) {
+const modify = function(a,b,c,d) {
+    console.log("storage.modify used. Has been deprecited");
+    setField(a,b,c,d);
+}
+
+const setField = function(strID,property,value,isAppend) {
     const obj = retrieveItem(strID);
     if (!obj) {return};
-    console.log(isAppend);
-    if (isAppend === true) {
-        console.log("True");
-        obj[property].push(value);
-    } else {
-        console.log("not true");
+    if (!isAppend) {
         obj[property] = value;
+    } else if (Array.isArray(obj[property]) && !obj[property].includes(value)) {
+        obj[property].push(value);
     }
-    storeItem(obj);
+
+    _storeItem(obj);
 }
 
 const newItem = function(obj) {
-    storeItem(obj);
+    _storeItem(obj);
     directory.add(obj.id);
 }
 
@@ -107,13 +107,14 @@ const retrieveItem = function(strID) {
     }
 }
 
-const storeItem = function(obj) {
+const _storeItem = function(obj) {
     localStorage[obj.id] = JSON.stringify(obj);
 }
 
 export {
         logDatabase,
         lookupKey,
+        setField,
         modify,
         newItem,
         remove,

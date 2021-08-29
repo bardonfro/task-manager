@@ -26,10 +26,24 @@ class Task {
 }
 
 const assignProject = function(taskID,projectID) {
-    console.log(taskID);
-    console.log(projectID);
+    unassignProject(taskID);
     setField(taskID,'project',projectID);
     setField(projectID,'tasks',taskID,true); 
+}
+
+const unassignProject = function (taskID) {
+    const projectID = storage.lookupKey(taskID,'project');
+    if (!projectID) {return;}
+    const projectTasks = storage.lookupKey(projectID,'tasks');
+    const index = projectTasks.indexOf(taskID);
+    if (index >= 0) {
+        projectTasks.splice(index,1);
+    }
+
+    setField(projectID,'tasks',projectTasks);
+    setField(taskID,'project',undefined);
+
+
 }
 
 const deleteItem = function(strID) {
@@ -73,7 +87,7 @@ const newTask = function(name) {
 }
 
 const setField = function(strID,field,value,isAppend) {
-    storage.modify(strID,field,value,isAppend);
+    storage.setField(strID,field,value,isAppend);
     index.modify(strID,field,value,isAppend);
 }
 
@@ -91,6 +105,7 @@ const toggleIsComplete = function(strID) {
 }
 
 export {assignProject,
+        unassignProject,
         deleteItem,
         getCompletedTasks,
         getActionableTasks,
