@@ -45,6 +45,7 @@ const renderCard = function(paramObj) {
 const renderModal = function (paramObj) {
     if (!paramObj || !(typeof(paramObj === 'object'))) {return;}
 
+    // Background and closure events
     const modalBackground = dommy.el('div.modal-background');
         modalBackground.close = function() {
             modalBackground.parentElement.removeChild(modalBackground);
@@ -56,11 +57,13 @@ const renderModal = function (paramObj) {
             }
         }
         document.addEventListener('keydown',modalBackground.keydownHandler);
-    
     document.body.appendChild(modalBackground);
+    
+    
     const modalWindow = dommy.el('div.modal-window');
     modalBackground.appendChild(modalWindow);
-    
+        
+        // Banner and Title
         const banner = dommy.el('div.banner');
     
             const titleBar = dommy.el('div.title-bar');
@@ -73,11 +76,12 @@ const renderModal = function (paramObj) {
             
         dommy.appendChildren(banner,titleBar,closeBtn)
         
+        // Content Wrapper and Panels
         const contentWrapper = dommy.el('div.contentWrapper');
-        dommy.appendChildren(modalWindow,banner,contentWrapper)
+            dommy.appendChildren(modalWindow,banner,contentWrapper)
 
-        const menuPanel = dommy.el('div.menu-panel');
-        const dataPanel = dommy.el('div.data-panel');
+            const menuPanel = dommy.el('div.menu-panel');
+            const dataPanel = dommy.el('div.data-panel');
         dommy.appendChildren(contentWrapper,dataPanel,menuPanel);
 
         dommy.appendChildren(menuPanel,dommy.el('button','Test'));
@@ -89,7 +93,6 @@ const renderModal = function (paramObj) {
         
         if (paramObj.type === "project") {
             taskListWrapper.textContent = "Here is a list of the tasks for this project:"
-            // This part needs help. Not working.
             paramObj.tasks.forEach(function(taskID) {
                 taskListWrapper.appendChild(dommy.el('p',core.lookupKey(taskID,'name')))
             });    
@@ -100,11 +103,33 @@ const renderModal = function (paramObj) {
             const projectSelector = dommy.el('div.project-select');
                 projectSelector.appendChild(dommy.el('p',"Select Project"));
                 const projectDropdown = dommy.el('select');
-                projectDropdown.appendChild(dommy.el('option',(paramObj.project ? core.lookupKey(paramObj.project,'name') : "--none--")));
+                const arrProjects = [];
+
                 core.getProjects(200).forEach(function(project) {
-                    const item = dommy.el('option',project.name);
+                    let name = project.name;
+                    if (project.id === paramObj.project) {
+                        name = "-" + name + "-";
+                    }
+                    const item = dommy.el('option',name);
                     item.strID = project.id;
-                    projectDropdown.appendChild(item);
+                    arrProjects.push(item);
+                });
+                arrProjects.sort(function(a,b) {
+                    if (a.textContent < b.textContent) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+                const noneElement = dommy.el('option','--none--');
+                noneElement.strID = undefined;
+                if (paramObj.project) {
+                    arrProjects.push(noneElement);
+                } else {
+                    arrProjects.unshift(noneElement);
+                }
+                arrProjects.forEach(function(element) {
+                    projectDropdown.appendChild(element);
                 });
                 projectDropdown.addEventListener('change',function(e) {
                     const list = e.target.options;
@@ -112,7 +137,7 @@ const renderModal = function (paramObj) {
                     const projectID = list[selectedIndex].strID;
                     core.assignProject(paramObj.id,projectID);
                     //core.assignProject(paramObj.id,e.target.options[e.target.options.selectedIndex].strID);
-                })
+                });
             projectSelector.appendChild(projectDropdown);
             menuPanel.appendChild(projectSelector);
 

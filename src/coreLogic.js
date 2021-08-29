@@ -27,8 +27,9 @@ class Task {
 
 const assignProject = function(taskID,projectID) {
     unassignProject(taskID);
+    if (!projectID) {return;}
     setField(taskID,'project',projectID);
-    setField(projectID,'tasks',taskID,true); 
+    setField(projectID,'tasks',taskID,true);
 }
 
 const unassignProject = function (taskID) {
