@@ -32,7 +32,7 @@ const getActionableTasks = function(num) {
             arrActionables.push(item);
         }
     });
-    return arrActionables.sort().reverse().slice(0,num);
+    return arrActionables.sort().slice(0,num);
 }
 
 const getCompletedTasks = function(num) {
@@ -54,7 +54,7 @@ const getProjects = function(num) {
             arrProjects.push(item);
         }
     });
-    return arrProjects.sort().reverse().slice(0,num);
+    return arrProjects.sort().slice(0,num);
 }
 
 const logDatabase = function() {

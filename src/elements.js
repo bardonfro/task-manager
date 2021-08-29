@@ -83,7 +83,6 @@ const renderModal = function (paramObj) {
         if (paramObj.type === "project") {
             taskListWrapper.textContent = "Here is a list of the tasks for this project:"
             // This part needs help. Not working.
-            console.log(paramObj.tasks);
             paramObj.tasks.forEach(function(taskID) {
                 taskListWrapper.appendChild(dommy.el('p',core.lookupKey(taskID,'name')))
             });    
