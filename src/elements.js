@@ -46,11 +46,18 @@ const renderModal = function (paramObj) {
     if (!paramObj || !(typeof(paramObj === 'object'))) {return;}
 
     const modalBackground = dommy.el('div.modal-background');
+        modalBackground.close = function() {
+            modalBackground.parentElement.removeChild(modalBackground);
+            document.removeEventListener('keydown', modalBackground.keydownHandler);
+        }
+        modalBackground.keydownHandler = function(e) {
+            if (e.key === "Escape") {
+                modalBackground.close();
+            }
+        }
+        document.addEventListener('keydown',modalBackground.keydownHandler);
+    
     document.body.appendChild(modalBackground);
-    modalBackground.close = function() {
-        modalBackground.parentElement.removeChild(modalBackground);
-    }
-
     const modalWindow = dommy.el('div.modal-window');
     modalBackground.appendChild(modalWindow);
     
