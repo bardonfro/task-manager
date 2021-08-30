@@ -12,7 +12,7 @@ const refreshHighlight = function (element) {
         element.classList.remove('refresh-highlight');
     }
     
-    setTimeout(removeRefreshHighlight,5000);
+    setTimeout(removeRefreshHighlight,2000);
 }
 
 const renderCard = function(paramObj) {

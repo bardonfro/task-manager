@@ -31,27 +31,19 @@ const completedPane = render.pane({name:"Completed",id:"completed-pane",contentT
 
 dommy.appendChildren(workspaceWrapper,projectsPane,nextActionsPane,completedPane);
 
-const getParentCard = function(element) {
-    if (element.tagName === "BODY") {return;}
-    if (element.classList.contains("card")) {
-        return element;
-    } else {
-        return getParentCard(element.parentElement);
-    }
-}
 
-const getParentPane = function(element) {
-    if (element.tagName === "BODY") {return;}
-    if (element.classList.contains("pane")) {
+const getParentOfClass = function(element,targetClass) {
+    if (!element || element.tagName === "BODY") {return;}
+    if (element.classList.contains(targetClass)) {
         return element;
     } else {
-        return getParentPane(element.parentElement);
+        return getParentOfClass(element.parentElement,targetClass);
     }
 }
 
 const renderChange = function (strID) {
     displayRegistry.read(strID).forEach(function(element) {
-        getParentCard(element).refresh();
+        getParentOfClass(element,'card').refresh();
     });
 }
 
@@ -75,7 +67,12 @@ const modify = function(strID,field,value) {
             break;
         case "project":
             action = function(element) {
-                getParentCard(element).refresh();
+                getParentOfClass(element,'card').refresh();
+            };
+            break;
+        case "tasks":
+            action = function(element) {
+                getParentOfClass(element,'card').refresh();
             };
             break;
         default:
@@ -93,4 +90,7 @@ const modify = function(strID,field,value) {
 
 displayRegistry.log();
 
+console.log(getParentOfClass(dommy.el('p'),'card'));
+
 export {modify}
+
