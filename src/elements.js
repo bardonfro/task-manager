@@ -3,6 +3,18 @@ import * as dommy from './dommy.js';
 import * as core from './coreLogic.js';
 import * as index from './index.js';
 
+const refreshHighlight = function (element) {
+    console.log("Refresh:");
+    console.log(element);
+    element.classList.add('refresh-highlight');
+    
+    const removeRefreshHighlight = function() {
+        element.classList.remove('refresh-highlight');
+    }
+    
+    setTimeout(removeRefreshHighlight,5000);
+}
+
 const renderCard = function(paramObj) {
     // Build card structure
     const card = document.createElement('div');
@@ -13,6 +25,10 @@ const renderCard = function(paramObj) {
         const title = dommy.el('p.card-title')
         const parentProject = dommy.el('p.project-wrapper');
         dommy.appendChildren(titleWrapper,title,parentProject);
+    
+    // Child Task List
+    const childTaskWrapper = dommy.el('div.child-tasks-wrapper');
+
     
     // Icon wrapper
     const iconWrapper = dommy.el('div.icon-wrapper');
@@ -28,7 +44,7 @@ const renderCard = function(paramObj) {
     
 
     dommy.appendChildren(iconWrapper,completeIcon,editIcon)
-    dommy.appendChildren(card,titleWrapper,iconWrapper)
+    dommy.appendChildren(card,titleWrapper,childTaskWrapper, iconWrapper);
     displayRegistry.add(paramObj.id,card);
 
     card.fillContent = function(paramObj) {
@@ -44,11 +60,30 @@ const renderCard = function(paramObj) {
         } else {
                 parentProject.textContent = ""
         }
+
+        if (paramObj.type === 'project') {
+            const list = dommy.el('ul.child-task-list');
+            const arrIDs = core.lookupKey(paramObj.id,'tasks');
+            if (!Array.isArray(arrIDs) || !arrIDs.length > 0) {return;}
+            childTaskWrapper.appendChild(dommy.el('p.header','Tasks:'))
+            arrIDs.forEach(function(strID){
+                const li = dommy.el('li',core.lookupKey(strID,'name'));
+                if (core.lookupKey(strID,'isComplete')) {
+                    li.classList = "complete";
+                }
+                list.appendChild(li);
+                displayRegistry.add(strID,li);
+            });
+            childTaskWrapper.appendChild(list);
+            
+            childTaskWrapper.textContent
+        }
     }
 
 
     card.refresh = function() {
         card.fillContent(core.retrieveItem(card.dataset.id));
+        refreshHighlight(card);
     }
 
 

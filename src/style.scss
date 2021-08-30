@@ -176,6 +176,15 @@ div {
     
 }
 
+
+.card.project-card {
+    .child-tasks-wrapper {
+        li.complete {
+            text-decoration: line-through;
+        }
+    }
+}
+
 .card.complete {
     background-color: rgb(222, 220, 220);
     .card-title {
@@ -190,4 +199,8 @@ div {
 #footer {
     margin-top:auto;
     flex-grow: 0;
+}
+
+.refresh-highlight {
+    background-color: red;
 }

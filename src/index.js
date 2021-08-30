@@ -91,5 +91,6 @@ const modify = function(strID,field,value) {
     });
 }
 
+displayRegistry.log();
 
 export {modify}
