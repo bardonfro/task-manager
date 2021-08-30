@@ -27,7 +27,8 @@ const getActionableTasks = function(num) {
     const arrActionables = [];
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
-        if (item.isActionable === true &&
+        if (item.type === 'task' &&
+            item.isActionable === true &&
             item.isComplete === false) {
             arrActionables.push(item);
         }
@@ -50,7 +51,7 @@ const getProjects = function(num) {
     const arrProjects = [];
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
-        if (item.id[0] === "p") {
+        if (item.type === 'project') {
             arrProjects.push(item);
         }
     });
