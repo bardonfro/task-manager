@@ -11,6 +11,7 @@ import './style.scss';
     
 // Creating the layout framework
 
+
 const pageWrapper = dommy.el("div#page-wrapper");
 dommy.appendChildren(document.body,pageWrapper);
 

@@ -101,6 +101,14 @@ const remove = function (strID) {
     }
 }
 
+const retrieveAll = function() {
+    let arrObj = [];
+    directory.get().forEach(function(strID) {
+        arrObj.push(retrieveItem(strID));
+    });
+    return arrObj;
+}
+
 const retrieveItem = function(strID) {
     if (localStorage[strID]) { 
         return JSON.parse(localStorage[strID]);
@@ -111,6 +119,7 @@ const _storeItem = function(obj) {
     localStorage[obj.id] = JSON.stringify(obj);
 }
 
+
 export {
         logDatabase,
         lookupKey,
@@ -118,6 +127,7 @@ export {
         modify,
         newItem,
         remove,
+        retrieveAll,
         retrieveItem,
         getActionableTasks,
         getCompletedTasks, 

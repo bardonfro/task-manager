@@ -1,6 +1,8 @@
 import * as storage from './storage.js'
 import * as index from './index.js'
 
+const currentVersion = "0.5.0.555";
+
 class Project {
     constructor (name) {
         this.name = name;
@@ -87,13 +89,17 @@ const newTask = function(name) {
     return task;
 }
 
+const retrieveItem = function (strID) {
+    return storage.retrieveItem(strID);
+}
+
 const setField = function(strID,field,value,isAppend) {
     storage.setField(strID,field,value,isAppend);
     index.modify(strID,field,value,isAppend);
 }
 
 const toggleIsComplete = function(strID) {
-    const item = storage.retrieveItem(strID);
+    const item = retrieveItem(strID);
     let value;
     if (item.isComplete) {
         value = false
@@ -106,7 +112,7 @@ const toggleIsComplete = function(strID) {
 }
 
 export {assignProject,
-        unassignProject,
+            unassignProject,
         deleteItem,
         getCompletedTasks,
         getActionableTasks,
@@ -115,6 +121,7 @@ export {assignProject,
         lookupKey,
         newProject,
         newTask,
+        retrieveItem,
         setField,
         toggleIsComplete,
     };

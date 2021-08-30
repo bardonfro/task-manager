@@ -4,21 +4,16 @@ import * as core from './coreLogic.js';
 import * as index from './index.js';
 
 const renderCard = function(paramObj) {
+    // Build card structure
     const card = document.createElement('div');
     card.classList = `card ${paramObj.type}-card`;
     card.dataset.id = paramObj.id;
 
     const titleWrapper = dommy.el('div.title-wrapper');
-        titleWrapper.appendChild(dommy.el('p.card-title',paramObj.name))
+        const title = dommy.el('p.card-title')
+        titleWrapper.appendChild(title)
     
-    if (paramObj.isComplete === true) {
-        card.classList.add("complete");
-    }
-
-    if (paramObj.type === "task") {
-        // Display project 
-    }
-    
+    // Icon wrapper
     const iconWrapper = dommy.el('div.icon-wrapper');
     
     const completeIcon = dommy.el('div.icon.complete',"\u2713");
@@ -31,14 +26,30 @@ const renderCard = function(paramObj) {
         }
     
 
-
-    if (paramObj.type === "task" && paramObj.project) {
-        titleWrapper.appendChild(renderParentProjectWrapper(paramObj));
-    }
-
     dommy.appendChildren(iconWrapper,completeIcon,editIcon)
     dommy.appendChildren(card,titleWrapper,iconWrapper)
     displayRegistry.add(paramObj.id,card);
+
+    card.fillContent = function(paramObj) {
+        title.textContent = paramObj.name;
+        if (paramObj.isComplete) {
+            card.classList.add('complete');
+        } else {
+            card.classList.remove('complete');
+        }
+        
+        if (paramObj.type === "task" && paramObj.project) {
+            titleWrapper.appendChild(renderParentProjectWrapper(paramObj));
+        }
+    }
+
+
+    card.refresh = function() {
+        card.fillContent(core.retrieveItem(card.dataset.id));
+    }
+
+
+    card.fillContent(paramObj);
     return card;
 }
 
