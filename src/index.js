@@ -51,7 +51,7 @@ const getParentPane = function(element) {
 
 const renderChange = function (strID) {
     displayRegistry.read(strID).forEach(function(element) {
-        getParentPane(element).refresh();
+        getParentCard(element).refresh();
     });
 }
 
@@ -73,14 +73,22 @@ const modify = function(strID,field,value) {
             nextActionsPane.refresh();
             completedPane.refresh();
             break;
+        case "project":
+            action = function(element) {
+                getParentCard(element).refresh();
+            };
+            break;
         default:
             //location.reload();
             console.log('Ready for reload'); 
+            console.log(core.retrieveItem(strID));
             return;
     
     }
 
-    displayRegistry.read(strID).forEach(function(element) {action(element)});
+    displayRegistry.read(strID).forEach(function(element) {
+        action(element)
+    });
 }
 
 

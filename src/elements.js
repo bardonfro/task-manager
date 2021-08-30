@@ -11,7 +11,8 @@ const renderCard = function(paramObj) {
 
     const titleWrapper = dommy.el('div.title-wrapper');
         const title = dommy.el('p.card-title')
-        titleWrapper.appendChild(title)
+        const parentProject = dommy.el('p.project-wrapper');
+        dommy.appendChildren(titleWrapper,title,parentProject);
     
     // Icon wrapper
     const iconWrapper = dommy.el('div.icon-wrapper');
@@ -39,7 +40,9 @@ const renderCard = function(paramObj) {
         }
         
         if (paramObj.type === "task" && paramObj.project) {
-            titleWrapper.appendChild(renderParentProjectWrapper(paramObj));
+            parentProject.textContent = 'Project: ' + core.lookupKey(paramObj.project,'name');
+        } else {
+                parentProject.textContent = ""
         }
     }
 
@@ -54,7 +57,9 @@ const renderCard = function(paramObj) {
 }
 
 const renderModal = function (paramObj) {
-    if (!paramObj || !(typeof(paramObj === 'object'))) {return;}
+    const recordObj = core.retrieveItem(paramObj.id);
+
+    if (!recordObj || !(typeof(recordObj === 'object'))) {return;}
 
     // Background and closure events
     const modalBackground = dommy.el('div.modal-background');
@@ -78,9 +83,9 @@ const renderModal = function (paramObj) {
         const banner = dommy.el('div.banner');
     
             const titleBar = dommy.el('div.title-bar');
-                titleBar.appendChild(dommy.el('h3.title',paramObj.name));
-                if (paramObj.type === 'task' && paramObj.project) {
-                    titleBar.appendChild(renderParentProjectWrapper(paramObj));
+                titleBar.appendChild(dommy.el('h3.title',recordObj.name));
+                if (recordObj.type === 'task' && recordObj.project) {
+                    titleBar.appendChild(renderParentProjectWrapper(recordObj));
                 }
             const closeBtn = dommy.el('button.close');
                 closeBtn.addEventListener('click',modalBackground.close);
@@ -102,14 +107,14 @@ const renderModal = function (paramObj) {
    
         dommy.appendChildren(dataPanel,description,taskListWrapper);
         
-        if (paramObj.type === "project") {
+        if (recordObj.type === "project") {
             taskListWrapper.textContent = "Here is a list of the tasks for this project:"
-            paramObj.tasks.forEach(function(taskID) {
+            recordObj.tasks.forEach(function(taskID) {
                 taskListWrapper.appendChild(dommy.el('p',core.lookupKey(taskID,'name')))
             });    
         }
 
-        if (paramObj.type === 'task') {
+        if (recordObj.type === 'task') {
             // Project Selector
             const projectSelector = dommy.el('div.project-select');
                 projectSelector.appendChild(dommy.el('p',"Select Project"));
@@ -118,7 +123,7 @@ const renderModal = function (paramObj) {
 
                 core.getProjects(200).forEach(function(project) {
                     let name = project.name;
-                    if (project.id === paramObj.project) {
+                    if (project.id === recordObj.project) {
                         name = "-" + name + "-";
                     }
                     const item = dommy.el('option',name);
@@ -134,7 +139,7 @@ const renderModal = function (paramObj) {
                 });
                 const noneElement = dommy.el('option','--none--');
                 noneElement.strID = undefined;
-                if (paramObj.project) {
+                if (recordObj.project) {
                     arrProjects.push(noneElement);
                 } else {
                     arrProjects.unshift(noneElement);
@@ -146,7 +151,7 @@ const renderModal = function (paramObj) {
                     const list = e.target.options;
                     const selectedIndex = list.selectedIndex;
                     const projectID = list[selectedIndex].strID;
-                    core.assignProject(paramObj.id,projectID);
+                    core.assignProject(recordObj.id,projectID);
                     //core.assignProject(paramObj.id,e.target.options[e.target.options.selectedIndex].strID);
                 });
             projectSelector.appendChild(projectDropdown);
