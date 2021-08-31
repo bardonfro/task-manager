@@ -49,8 +49,9 @@ const renderChange = function (strID) {
 
 const modify = function(strID,field,value) {
 
-    let action = function(){console.log("No action")};
+   // let action = function(){console.log("No action")};
 
+    /*
     switch (field) {
         case "isComplete":
             if (value === true) {
@@ -82,9 +83,10 @@ const modify = function(strID,field,value) {
             return;
     
     }
+    */
 
     displayRegistry.read(strID).forEach(function(element) {
-        action(element)
+        getParentOfClass(element,'card').refresh();
     });
 }
 

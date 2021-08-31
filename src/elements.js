@@ -64,6 +64,7 @@ const renderCard = function(paramObj) {
         if (paramObj.type === 'project') {
             const list = dommy.el('ul.child-task-list');
             const arrIDs = core.lookupKey(paramObj.id,'tasks');
+            childTaskWrapper.textContent = "";
             if (!Array.isArray(arrIDs) || !arrIDs.length > 0) {return;}
             childTaskWrapper.appendChild(dommy.el('p.header','Tasks:'))
             arrIDs.forEach(function(strID){
@@ -211,6 +212,9 @@ const renderPane = function(obj) {
         pane.classList = "pane " + obj.classList;
     } else {
         pane.classList = "pane";
+    }
+    if (!(obj.contentType === "completedTasks")) {
+        pane.classList.add('incomplete');
     }
 
     const title = document.createElement('h3');

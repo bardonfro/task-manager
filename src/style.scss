@@ -152,6 +152,10 @@ div {
 
 }
 
+.pane.incomplete .card.complete {
+    display:none;
+}
+
 .card {
     min-height:10px;
     margin: .5em 0em;
