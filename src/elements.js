@@ -55,10 +55,11 @@ const renderCard = function(paramObj) {
             card.classList.remove('complete');
         }
         
-        if (paramObj.type === "task" && paramObj.project) {
-            parentProject.textContent = 'Project: ' + core.lookupKey(paramObj.project,'name');
-        } else {
-                parentProject.textContent = ""
+        if (paramObj.type === "task") {
+            parentProject.textContent = ""
+            if (paramObj.project) {
+                parentProject.textContent = 'Project: ' + core.lookupKey(paramObj.project,'name');
+            }
         }
 
         if (paramObj.type === 'project') {
@@ -72,6 +73,9 @@ const renderCard = function(paramObj) {
                 if (core.lookupKey(strID,'isComplete')) {
                     li.classList = "complete";
                 }
+                li.addEventListener('mouseenter',index.hoverHighlight.bind(li, strID));
+                li.addEventListener('mouseleave',index.hoverUnHighlight.bind(li, strID));
+            
                 list.appendChild(li);
                 displayRegistry.add(strID,li);
             });
@@ -87,6 +91,8 @@ const renderCard = function(paramObj) {
         refreshHighlight(card);
     }
 
+    card.addEventListener('mouseenter',index.hoverHighlight.bind(card, paramObj.id));
+    card.addEventListener('mouseleave',index.hoverUnHighlight.bind(card, paramObj.id));
 
     card.fillContent(paramObj);
     return card;

@@ -8,7 +8,20 @@ import './style.scss';
 
 //render.modal(core.getActionableTasks()[0]);
 
+const hoverHighlight = function (strID) {
+    displayRegistry.read(strID).forEach(function (element) {
+        element.classList.add('hover-highlight');
+    })
+}
+
+const hoverUnHighlight = function (strID) {
+    displayRegistry.read(strID).forEach(function (element) {
+        element.classList.remove('hover-highlight');
+    })
+}
     
+
+
 // Creating the layout framework
 
 
@@ -86,13 +99,16 @@ const modify = function(strID,field,value) {
     */
 
     displayRegistry.read(strID).forEach(function(element) {
-        getParentOfClass(element,'card').refresh();
+        const card = getParentOfClass(element,'card');
+        if (card) {card.refresh()};
     });
 }
 
-displayRegistry.log();
 
-console.log(getParentOfClass(dommy.el('p'),'card'));
 
-export {modify}
+
+export {
+    hoverHighlight,
+    hoverUnHighlight,
+    modify}
 

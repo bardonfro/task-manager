@@ -28,6 +28,16 @@ const _isRegistered = function(strID) {
     return false;
 };
 
+const remove = function(strID,element) {
+    let arr = read(strID);
+    if (Array.isArray(arr) &&
+        arr.length > 0 &&
+        arr.includes(element)) {
+            arr = arr.splice(arr.indexOf(element,1));
+    }
+    list[strID] = arr;
+}
+
 const read = function(strID) {
     if(!_isRegistered(strID)) {
         return;
@@ -36,5 +46,6 @@ const read = function(strID) {
     return list[strID];
 }
 
-export {add,log,read,test};
+
+export {add,log,read,remove,test};
 
