@@ -23,8 +23,8 @@ const renderCard = function(paramObj) {
 
     const titleWrapper = dommy.el('div.title-wrapper');
         const title = dommy.el('p.card-title')
-        const parentProject = dommy.el('p.project-wrapper');
-        dommy.appendChildren(titleWrapper,title,parentProject);
+        const parentProjectWrapper = dommy.el('div.parent-project-wrapper');
+        dommy.appendChildren(titleWrapper,title,parentProjectWrapper);
     
     // Child Task List
     const childTaskWrapper = dommy.el('div.child-tasks-wrapper');
@@ -56,9 +56,11 @@ const renderCard = function(paramObj) {
         }
         
         if (paramObj.type === "task") {
-            parentProject.textContent = ""
+            parentProjectWrapper.textContent = ""
             if (paramObj.project) {
-                parentProject.textContent = 'Project: ' + core.lookupKey(paramObj.project,'name');
+                const parentProject = dommy.el('p','Project: ' + core.lookupKey(paramObj.project,'name'));
+                parentProjectWrapper.appendChild(parentProject);
+                //displayRegistry.add(paramObj.project,parentProject);
             }
         }
 
