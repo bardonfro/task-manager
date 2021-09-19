@@ -127,9 +127,14 @@ const renderModal = function (paramObj) {
         const banner = dommy.el('div.banner');
     
             const titleBar = dommy.el('div.title-bar');
-                titleBar.appendChild(dommy.el('h3.title',recordObj.name));
+                const titleText = dommy.el('h3.title.editable',recordObj.name);
+                titleBar.appendChild(titleText);
+                titleText.update = function (str) {
+                    this.textContent = str;
+                    core.setField(paramObj.id,'name',str);
+                }
                 if (recordObj.type === 'task' && recordObj.project) {
-                    titleBar.appendChild(renderParentProjectWrapper(recordObj));
+                    // titleBar.appendChild(renderParentProjectWrapper(recordObj));
                 }
             const closeBtn = dommy.el('button.close');
                 closeBtn.addEventListener('click',modalBackground.close);
@@ -144,9 +149,16 @@ const renderModal = function (paramObj) {
             const dataPanel = dommy.el('div.data-panel');
         dommy.appendChildren(contentWrapper,dataPanel,menuPanel);
 
-        dommy.appendChildren(menuPanel,dommy.el('button','Test'));
+        let descriptionContent = paramObj.description;
+        if (!descriptionContent) {
+            descriptionContent = "Description ...";
+        }
 
-        const description = dommy.el('div.description','This is a big long description of the project. It is very verbose.');
+        const description = dommy.el('div.description.editable',descriptionContent);
+        description.update = function(str) {
+            this.textContent = str;
+            core.setField(paramObj.id,'description',str);
+}
         const taskListWrapper = dommy.el('div.task-list-wrapper');
    
         dommy.appendChildren(dataPanel,description,taskListWrapper);
@@ -205,8 +217,16 @@ const renderModal = function (paramObj) {
         }
 
 
-
-    
+        // Edit fields in the modal window
+        document.querySelectorAll('.editable').forEach(function(element) {
+            element.addEventListener('click',function (event) {
+                const element = event.target;
+                const input = prompt("Enter New Content",element.textContent);
+                if (input && input.length > 0) {
+                    element.update(input);
+                }
+            })
+        });
 
 }
 

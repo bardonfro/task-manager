@@ -96,6 +96,7 @@ const retrieveItem = function (strID) {
 const setField = function(strID,field,value,isAppend) {
     storage.setField(strID,field,value,isAppend);
     index.modify(strID,field,value,isAppend);
+    console.log("x");
 }
 
 const toggleIsComplete = function(strID) {

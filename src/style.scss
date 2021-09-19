@@ -182,10 +182,19 @@ div {
 
 
 .card.project-card {
+    .parent-project-wrapper {
+        display: none;
+    }
     .child-tasks-wrapper {
         li.complete {
             text-decoration: line-through;
         }
+    }
+}
+
+.card.task-card {
+    .child-tasks-wrapper {
+        display: none;
     }
 }
 
