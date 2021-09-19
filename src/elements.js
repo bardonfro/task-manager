@@ -65,27 +65,16 @@ const renderCard = function(paramObj) {
         }
 
         if (paramObj.type === 'project') {
-            const list = dommy.el('ul.child-task-list');
-            const arrIDs = core.lookupKey(paramObj.id,'tasks');
             childTaskWrapper.textContent = "";
-            if (!Array.isArray(arrIDs) || !arrIDs.length > 0) {return;}
-            childTaskWrapper.appendChild(dommy.el('p.header','Tasks:'))
-            arrIDs.forEach(function(strID){
-                const li = dommy.el('li',core.lookupKey(strID,'name'));
-                if (core.lookupKey(strID,'isComplete')) {
-                    li.classList = "complete";
-                }
-                li.addEventListener('mouseenter',index.hoverHighlight.bind(li, strID));
-                li.addEventListener('mouseleave',index.hoverUnHighlight.bind(li, strID));
-            
-                list.appendChild(li);
-                displayRegistry.add(strID,li);
-            });
-            childTaskWrapper.appendChild(list);
-            
-            childTaskWrapper.textContent
+            const taskList = renderTaskList(paramObj.id);
+            if (taskList) {
+                childTaskWrapper.appendChild(dommy.el('p.header','Tasks:'));
+                childTaskWrapper.appendChild(taskList);
+            }
         }
+
     }
+    
 
 
     card.refresh = function() {
@@ -165,9 +154,7 @@ const renderModal = function (paramObj) {
         
         if (recordObj.type === "project") {
             taskListWrapper.textContent = "Here is a list of the tasks for this project:"
-            recordObj.tasks.forEach(function(taskID) {
-                taskListWrapper.appendChild(dommy.el('p',core.lookupKey(taskID,'name')))
-            });    
+            taskListWrapper.appendChild(renderTaskList(paramObj.id))    
         }
 
         if (recordObj.type === 'task') {
@@ -354,6 +341,24 @@ const renderTaskCard = function(obj) {
     return renderCard(obj);
 }
 
+const renderTaskList = function (strID,noRegister) {
+    const list = dommy.el('ul.child-task-list');
+    const arrIDs = core.lookupKey(strID,'tasks');
+    if (!Array.isArray(arrIDs) || !arrIDs.length > 0) {return;}
+    arrIDs.forEach(function(strID){
+        const li = dommy.el('li',core.lookupKey(strID,'name'));
+        if (core.lookupKey(strID,'isComplete')) {
+            li.classList = "complete";
+        }
+        li.addEventListener('mouseenter',index.hoverHighlight.bind(li, strID));
+        li.addEventListener('mouseleave',index.hoverUnHighlight.bind(li, strID));
+    
+        list.appendChild(li);
+        displayRegistry.add(strID,li);
+    });
+    return list;
+    
+}
 
 
 export {
