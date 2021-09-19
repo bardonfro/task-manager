@@ -23,6 +23,9 @@ const renderCard = function(paramObj) {
 
     const titleWrapper = dommy.el('div.title-wrapper');
         const title = dommy.el('p.card-title')
+        title.onclick = function(e) {
+            renderModal(paramObj);
+        }
         const parentProjectWrapper = dommy.el('div.parent-project-wrapper');
         dommy.appendChildren(titleWrapper,title,parentProjectWrapper);
     
@@ -86,6 +89,7 @@ const renderCard = function(paramObj) {
 }
 
 const renderModal = function (paramObj) {
+    // paramObj will be as the card was originally rendered. This step ensures the modal window show current info.
     const recordObj = core.retrieveItem(paramObj.id);
 
     if (!recordObj || !(typeof(recordObj === 'object'))) {return;}
@@ -149,8 +153,10 @@ const renderModal = function (paramObj) {
         dommy.appendChildren(dataPanel,description,taskListWrapper);
         
         if (recordObj.type === "project") {
-            taskListWrapper.textContent = "Here is a list of the tasks for this project:"
-            taskListWrapper.appendChild(renderTaskList(paramObj.id,true))    
+            if (recordObj.tasks && recordObj.tasks.length > 0) {
+                taskListWrapper.textContent = "Here is a list of the tasks for this project:"
+                taskListWrapper.appendChild(renderTaskList(paramObj.id,true))    
+            }
         }
 
         if (recordObj.type === 'task') {
