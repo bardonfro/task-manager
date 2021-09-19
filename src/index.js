@@ -9,15 +9,11 @@ import './style.scss';
 //render.modal(core.getActionableTasks()[0]);
 
 const hoverHighlight = function (strID) {
-    displayRegistry.read(strID).forEach(function (element) {
-        element.classList.add('hover-highlight');
-    })
+    console.log("index.hoverHighlight used. Use displayRegistry.add instead")
 }
 
 const hoverUnHighlight = function (strID) {
-    displayRegistry.read(strID).forEach(function (element) {
-        element.classList.remove('hover-highlight');
-    })
+    console.log("index.hoverUnHighlight used. Use displayRegistry.add instead")
 }
     
 

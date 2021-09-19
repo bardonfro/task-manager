@@ -15,7 +15,22 @@ const add = function(strID,element) {
     };
 
     list[strID].push(element);
+    element.addEventListener('mouseenter',hoverHighlight.bind(element,strID));
+    element.addEventListener('mouseleave',hoverUnHighlight.bind(element,strID));
 };
+
+const hoverHighlight = function (strID) {
+    read(strID).forEach(function (element) {
+        element.classList.add('hover-highlight');
+    })
+}
+
+const hoverUnHighlight = function (strID) {
+    read(strID).forEach(function (element) {
+        element.classList.remove('hover-highlight');
+    })
+}
+
 
 const log = function() {
     console.table(list);

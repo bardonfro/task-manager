@@ -60,7 +60,6 @@ const renderCard = function(paramObj) {
             if (paramObj.project) {
                 const parentProject = dommy.el('p','Project: ' + core.lookupKey(paramObj.project,'name'));
                 parentProjectWrapper.appendChild(parentProject);
-                //displayRegistry.add(paramObj.project,parentProject);
             }
         }
 
@@ -81,9 +80,6 @@ const renderCard = function(paramObj) {
         card.fillContent(core.retrieveItem(card.dataset.id));
         refreshHighlight(card);
     }
-
-    card.addEventListener('mouseenter',index.hoverHighlight.bind(card, paramObj.id));
-    card.addEventListener('mouseleave',index.hoverUnHighlight.bind(card, paramObj.id));
 
     card.fillContent(paramObj);
     return card;
@@ -154,7 +150,7 @@ const renderModal = function (paramObj) {
         
         if (recordObj.type === "project") {
             taskListWrapper.textContent = "Here is a list of the tasks for this project:"
-            taskListWrapper.appendChild(renderTaskList(paramObj.id))    
+            taskListWrapper.appendChild(renderTaskList(paramObj.id,true))    
         }
 
         if (recordObj.type === 'task') {
@@ -341,7 +337,7 @@ const renderTaskCard = function(obj) {
     return renderCard(obj);
 }
 
-const renderTaskList = function (strID,noRegister) {
+const renderTaskList = function (strID,noRegister=false) {
     const list = dommy.el('ul.child-task-list');
     const arrIDs = core.lookupKey(strID,'tasks');
     if (!Array.isArray(arrIDs) || !arrIDs.length > 0) {return;}
@@ -350,11 +346,10 @@ const renderTaskList = function (strID,noRegister) {
         if (core.lookupKey(strID,'isComplete')) {
             li.classList = "complete";
         }
-        li.addEventListener('mouseenter',index.hoverHighlight.bind(li, strID));
-        li.addEventListener('mouseleave',index.hoverUnHighlight.bind(li, strID));
-    
         list.appendChild(li);
-        displayRegistry.add(strID,li);
+        if (!noRegister) {
+            displayRegistry.add(strID,li);
+        }
     });
     return list;
     
