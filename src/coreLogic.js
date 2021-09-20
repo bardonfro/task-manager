@@ -11,6 +11,7 @@ class Project {
         this.domain = undefined;
         this.date = undefined;
         this.tasks = [];
+        this.isComplete = false;
     }
 }
 

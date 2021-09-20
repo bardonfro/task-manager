@@ -52,7 +52,7 @@ const getProjects = function(num) {
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
         if (item.type === 'project' &&
-            item.isComplete === false) {
+            !item.isComplete) {
             arrProjects.push(item);
         }
     });
