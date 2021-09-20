@@ -4,8 +4,6 @@ import * as core from './coreLogic.js';
 import * as index from './index.js';
 
 const refreshHighlight = function (element) {
-    console.log("Refresh:");
-    console.log(element);
     element.classList.add('refresh-highlight');
     
     const removeRefreshHighlight = function() {

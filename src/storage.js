@@ -51,7 +51,8 @@ const getProjects = function(num) {
     const arrProjects = [];
     directory.get().forEach(function(strID) {
         const item = retrieveItem(strID);
-        if (item.type === 'project') {
+        if (item.type === 'project' &&
+            item.isComplete === false) {
             arrProjects.push(item);
         }
     });
