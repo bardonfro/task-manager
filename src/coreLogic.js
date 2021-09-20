@@ -108,6 +108,7 @@ const toggleIsComplete = function(strID) {
     }
 
     setField(strID,"isComplete",value);
+    index.refreshAllPanes();
 
 }
 

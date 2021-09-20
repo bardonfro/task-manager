@@ -1,31 +1,44 @@
 
-const list = {};
+const arrElementsByID = {};
+const panes = [];
 
 const test = function (strID) {
-    if(list[strID]) {
-        console.log(strID + " value is: " + list[strID]);
+    if(arrElementsByID[strID]) {
+        console.log(strID + " value is: " + arrElementsByID[strID]);
     } else {
         console.log(strID + " not found.");
     }
 };
 
 const add = function(strID,element) {
+    console.log("displayRegistry.add used. Use addByID instead.");
+    addByID(strID,element);
+}
+const addByID = function(strID,element) {
     if (!_isRegistered(strID)) {
-        list[strID] = [];
+        arrElementsByID[strID] = [];
     };
 
-    list[strID].push(element);
-    element.addEventListener('mouseenter',hoverHighlight.bind(element,strID));
-    element.addEventListener('mouseleave',hoverUnHighlight.bind(element,strID));
+    arrElementsByID[strID].push(element);
+    element.addEventListener('mouseenter',_hoverHighlight.bind(element,strID));
+    element.addEventListener('mouseleave',_hoverUnHighlight.bind(element,strID));
 };
 
-const hoverHighlight = function (strID) {
+const addPane = function (pane) {
+    panes.push(pane);
+}
+
+const getPanes = function () {
+    return panes;
+}
+
+const _hoverHighlight = function (strID) {
     read(strID).forEach(function (element) {
         element.classList.add('hover-highlight');
     })
 }
 
-const hoverUnHighlight = function (strID) {
+const _hoverUnHighlight = function (strID) {
     read(strID).forEach(function (element) {
         element.classList.remove('hover-highlight');
     })
@@ -33,11 +46,11 @@ const hoverUnHighlight = function (strID) {
 
 
 const log = function() {
-    console.table(list);
+    console.table(arrElementsByID);
 };
 
 const _isRegistered = function(strID) {
-    if(list[strID]) {
+    if(arrElementsByID[strID]) {
         return true;
     } 
     return false;
@@ -50,7 +63,7 @@ const remove = function(strID,element) {
         arr.includes(element)) {
             arr = arr.splice(arr.indexOf(element,1));
     }
-    list[strID] = arr;
+    arrElementsByID[strID] = arr;
 }
 
 const read = function(strID) {
@@ -58,9 +71,18 @@ const read = function(strID) {
         return;
     }
 
-    return list[strID];
+    return arrElementsByID[strID];
 }
 
 
-export {add,log,read,remove,test};
+export {
+    add,
+    addByID,
+    addPane,
+    getPanes,
+    log,
+    read,
+    remove,
+    test
+};
 

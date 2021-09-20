@@ -58,47 +58,18 @@ const renderChange = function (strID) {
 
 const modify = function(strID,field,value) {
 
-   // let action = function(){console.log("No action")};
-
-    /*
-    switch (field) {
-        case "isComplete":
-            if (value === true) {
-                action = function(element) {
-                    element.classList.add("complete");
-                }
-            } else {
-                action = function(element) {
-                    element.classList.remove("complete");
-                }
-            }
-            nextActionsPane.refresh();
-            completedPane.refresh();
-            break;
-        case "project":
-            action = function(element) {
-                getParentOfClass(element,'card').refresh();
-            };
-            break;
-        case "tasks":
-            action = function(element) {
-                getParentOfClass(element,'card').refresh();
-            };
-            break;
-        default:
-            //location.reload();
-            console.log('Ready for reload'); 
-            console.log(core.retrieveItem(strID));
-            return;
-    
-    }
-    */
-
     displayRegistry.read(strID).forEach(function(element) {
         const card = getParentOfClass(element,'card');
         if (card) {card.refresh()};
     });
 }
+
+const refreshAllPanes = function () {
+    displayRegistry.getPanes().forEach(function(pane) {
+        pane.refresh();
+    });
+}
+
 
 
 
@@ -106,5 +77,7 @@ const modify = function(strID,field,value) {
 export {
     hoverHighlight,
     hoverUnHighlight,
-    modify}
+    modify,
+    refreshAllPanes,
+}
 

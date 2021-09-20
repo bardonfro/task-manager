@@ -46,7 +46,7 @@ const renderCard = function(paramObj) {
 
     dommy.appendChildren(iconWrapper,completeIcon,editIcon)
     dommy.appendChildren(card,titleWrapper,childTaskWrapper, iconWrapper);
-    displayRegistry.add(paramObj.id,card);
+    displayRegistry.addByID(paramObj.id,card);
 
     card.fillContent = function(paramObj) {
         title.textContent = paramObj.name;
@@ -289,6 +289,7 @@ const renderPane = function(obj) {
         });
     }
     
+    displayRegistry.addPane(pane);
     pane.refresh();
     return pane;
 }
@@ -352,7 +353,7 @@ const renderTaskList = function (strID,noRegister=false) {
         }
         list.appendChild(li);
         if (!noRegister) {
-            displayRegistry.add(strID,li);
+            displayRegistry.addByID(strID,li);
         }
     });
     return list;
