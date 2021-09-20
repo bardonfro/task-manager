@@ -65,6 +65,18 @@ const getActionableTasks = function (num = 250) {
     return storage.getActionableTasks(num);
 }
 
+const _getIncompleteOfProject = function(strID) {
+    const arrAllTasks = lookupKey(strID,'tasks');
+    const arrIncompleteTasks = [];
+    arrAllTasks.forEach(function(taskID) {
+        if (!lookupKey(taskID,'isComplete')) {
+            arrIncompleteTasks.push(taskID);
+        }
+    });
+    if (arrIncompleteTasks.length === 0) {return;}
+    return arrIncompleteTasks;
+}
+
 const getProjects = function(num = 150) {
     return storage.getProjects(num);
 }
@@ -105,6 +117,17 @@ const toggleIsComplete = function(strID) {
         value = false
     } else {
         value = true;
+
+        if (item.type === 'project') {
+            const arrIncompleteTasks = _getIncompleteOfProject(strID);
+            const promptMessage = 'This project has incomplete tasks. Would you like to mark them all complete and close the project?'
+            if (arrIncompleteTasks) {
+                if (!confirm(promptMessage)) {return;}
+                arrIncompleteTasks.forEach(function(taskID) {
+                    storage.setField(taskID,'isComplete',true);
+                });
+            }
+        }
     }
 
     setField(strID,"isComplete",value);
@@ -125,4 +148,4 @@ export {assignProject,
         retrieveItem,
         setField,
         toggleIsComplete,
-    };
+    }

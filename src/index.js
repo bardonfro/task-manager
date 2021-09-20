@@ -71,9 +71,6 @@ const refreshAllPanes = function () {
 }
 
 
-
-
-
 export {
     hoverHighlight,
     hoverUnHighlight,
