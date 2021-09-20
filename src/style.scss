@@ -185,11 +185,6 @@ div {
     .parent-project-wrapper {
         display: none;
     }
-    .child-tasks-wrapper {
-        li.complete {
-            text-decoration: line-through;
-        }
-    }
 }
 
 .card.task-card {
@@ -205,6 +200,9 @@ div {
     }
 }
 
+li.complete {
+    text-decoration: line-through;
+}
 
 
 
