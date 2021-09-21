@@ -86,6 +86,35 @@ const renderCard = function(paramObj) {
     return card;
 }
 
+const renderFormAddNew = function(parentElement, prompt = "Add new item...") {
+    const formWrapper = document.createElement('div');
+        formWrapper.classList = "form-wrapper";
+    const form = document.createElement('form');
+        const textInputWrapper = document.createElement('div');
+            textInputWrapper.classList = "text-input-wrapper";
+        const textInput = document.createElement('input');
+            textInput.type = "text";
+            textInput.placeholder = prompt;
+            textInput.name = "Input Name";
+            textInput.required = true;
+            textInput.classList = "text-input";
+        const submit = document.createElement('input');
+            submit.type = "submit";
+            submit.value = "+";
+            submit.classList = "submit";
+
+        textInputWrapper.appendChild(textInput);
+        form.appendChild(textInputWrapper);
+        form.appendChild(submit);
+        form.onsubmit = function(e){
+            parentElement.submitForm(e.target[0].value);
+            textInput.value = "";
+            return false;}
+    formWrapper.appendChild(form);
+        
+    return formWrapper;
+}
+
 const renderModal = function (paramObj) {
     // paramObj will be as the card was originally rendered. This step ensures the modal window show current info.
     const recordObj = core.retrieveItem(paramObj.id);
@@ -242,23 +271,25 @@ const renderPane = function(obj) {
         pane.appendChild(paneContent);
         pane.content = paneContent;
     
-    pane.appendChild(renderPaneForm(pane));
+    pane.appendChild(renderFormAddNew(pane));
 
     pane.contentType = obj.contentType;
     
+    let submitAction;
     let getCards;
+
 
     switch (pane.contentType){
         case "projects":
-            pane.submitForm = core.newProject;
+            submitAction = core.newProject;
             getCards = core.getProjects;
             break;
         case "actionableTasks":
-            pane.submitForm = core.newTask;
+            submitAction = core.newTask;
             getCards = core.getActionableTasks;
             break;
         case "completedTasks":
-            pane.submitForm = console.log;
+            submitAction = console.log;
             getCards = core.getCompletedTasks;
             break;
         default:
@@ -270,6 +301,11 @@ const renderPane = function(obj) {
     }
     pane.clear = function () {
         pane.content.textContent = "";
+    }
+
+    pane.submitForm = function (input) {
+        submitAction(input);
+        pane.refresh();
     }
 
     pane.refresh = function() {
@@ -294,35 +330,6 @@ const renderPane = function(obj) {
     return pane;
 }
 
-const renderPaneForm = function(pane) {
-    const formWrapper = document.createElement('div');
-        formWrapper.classList = "pane-form-wrapper";
-    const form = document.createElement('form');
-        const textInputWrapper = document.createElement('div');
-            textInputWrapper.classList = "text-input-wrapper";
-        const textInput = document.createElement('input');
-            textInput.type = "text";
-            textInput.placeholder = "Add New Item";
-            textInput.name = "Input Name";
-            textInput.required = true;
-            textInput.classList = "text-input";
-        const submit = document.createElement('input');
-            submit.type = "submit";
-            submit.value = "+";
-            submit.classList = "submit";
-
-        textInputWrapper.appendChild(textInput);
-        form.appendChild(textInputWrapper);
-        form.appendChild(submit);
-        form.onsubmit = function(e){
-            pane.submitForm(e.target[0].value);
-            textInput.value = "";
-            pane.refresh();
-            return false;}
-    formWrapper.appendChild(form);
-        
-    return formWrapper;
-}
 
 const renderParentProjectWrapper = function(paramObj) {
     const parentProjectWrapper = dommy.el('p.project-wrapper');
