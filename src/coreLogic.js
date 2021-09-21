@@ -90,16 +90,66 @@ const lookupKey = function(strID,key) {
     return storage.lookupKey(strID,key)
 }
 
-const newProject = function(name) {
-    const project = new Project(name);
+const newProject = function(paramObj) {
+    return newTodo({name:paramObj, type:'project'});
+    let project;
+    if (typeof(paramObj) === 'string') {
+        project = new Project(paramObj);
+    } else if (typeof(paramObj === 'object') &&
+                paramObj.name) {
+        project = new Project(paramObj.name);
+        Object.keys(paramObj).forEach(function(key) {
+            project[key] = paramObj[key];
+        })
+    } else {
+        return;
+    }
+
     storage.newItem(project);
     return project;
 }
 
-const newTask = function(name) {
-    const task = new Task(name);
+const newTask = function(paramObj) {
+    return newTodo({name:paramObj, type:'task'});
+    /*
+    let task;
+    if (typeof(paramObj) === 'string') {
+        task = new Task(paramObj);
+    } else if (typeof(paramObj === 'object') &&
+                paramObj.name) {
+        task = new Task(paramObj.name);
+        Object.keys(paramObj).forEach(function(key) {
+            task[key] = paramObj[key];
+        })
+    } else {
+        return;
+    }
+    */
+
     storage.newItem(task);
     return task;
+}
+
+const newTodo = function (paramObj) {
+    if (!paramObj.name ||
+        !typeof(paramObj.name) === 'string') {
+            return;
+        }
+    const todo = {
+        id: new Date().valueOf() + Math.random(),
+        domain: undefined,
+        date: undefined,
+        isActionable: true,
+        isComplete: false,
+        tasks: [],
+    }
+
+    Object.keys(paramObj).forEach(function(key) {
+        todo[key] = paramObj[key];
+    });
+
+    storage.newItem(todo);
+    return todo;
 }
 
 const retrieveItem = function (strID) {
@@ -146,6 +196,7 @@ export {assignProject,
         lookupKey,
         newProject,
         newTask,
+        newTodo,
         retrieveItem,
         setField,
         toggleIsComplete,
