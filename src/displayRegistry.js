@@ -68,7 +68,7 @@ const remove = function(strID,element) {
 
 const read = function(strID) {
     if(!_isRegistered(strID)) {
-        return;
+        return [];
     }
 
     return arrElementsByID[strID];

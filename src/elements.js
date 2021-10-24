@@ -136,6 +136,7 @@ const renderModal = function (paramObj) {
     document.body.appendChild(modalBackground);
     
     
+    // Modal Window
     const modalWindow = dommy.el('div.modal-window');
     modalBackground.appendChild(modalWindow);
         
@@ -179,12 +180,26 @@ const renderModal = function (paramObj) {
    
         dommy.appendChildren(dataPanel,description,taskListWrapper);
         
-        if (recordObj.type === "project") {
-            if (recordObj.tasks && recordObj.tasks.length > 0) {
-                taskListWrapper.textContent = "Here is a list of the tasks for this project:"
-                taskListWrapper.appendChild(renderTaskList(paramObj.id,true))    
+        //Task List
+        
+        taskListWrapper.fillContent = function () {
+            taskListWrapper.textContent = "Tasks:"
+            const taskList = renderTaskList(paramObj.id);
+            if (!taskList) {
+                taskListWrapper.appendChild(dommy.el('p','There are no tasks under this project.'));
+            } else {
+                taskListWrapper.appendChild(renderTaskList(paramObj.id,true));
+            }
+            taskListWrapper.appendChild(renderFormAddNew(taskListWrapper,"Enter new Task..."));
+            taskListWrapper.submitForm = function(input) {
+                const newTask = core.newTodo({name:input, type:'task'});
+                core.assignProject(newTask.id,recordObj.id);
+                this.fillContent();
             }
         }
+
+        if (recordObj.type === "project" && recordObj.tasks) {
+            taskListWrapper.fillContent();}
 
         if (recordObj.type === 'task') {
             // Project Selector
@@ -366,7 +381,6 @@ const renderTaskList = function (strID,noRegister=false) {
     return list;
     
 }
-
 
 export {
     renderCard as card,

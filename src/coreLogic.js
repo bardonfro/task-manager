@@ -91,6 +91,7 @@ const lookupKey = function(strID,key) {
 }
 
 const newProject = function(paramObj) {
+    console.log('core.newProject called. Should be core.newTodo.');
     return newTodo({name:paramObj, type:'project'});
     let project;
     if (typeof(paramObj) === 'string') {
@@ -110,6 +111,7 @@ const newProject = function(paramObj) {
 }
 
 const newTask = function(paramObj) {
+    console.log('core.newTask called. Should be core.newTodo.')
     return newTodo({name:paramObj, type:'task'});
     /*
     let task;

@@ -24,7 +24,7 @@ const hoverUnHighlight = function (strID) {
 const pageWrapper = dommy.el("div#page-wrapper");
 dommy.appendChildren(document.body,pageWrapper);
 
-const header = dommy.el("div#header","Header");
+const header = dommy.el("div#header",'');
 const contentWrapper = dommy.el("div.#content");
 const workspaceWrapper = dommy.el("div#workspace");
 const paneSelection = dommy.el("div#pane-selector","Pane Selector");
@@ -69,6 +69,12 @@ const refreshAllPanes = function () {
         pane.refresh();
     });
 }
+
+
+import reset from './defaultContent.js';
+const resetLink = dommy.el('p','Reset');
+resetLink.onclick = reset;
+header.appendChild(resetLink);
 
 
 export {
