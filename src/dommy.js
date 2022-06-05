@@ -1,3 +1,17 @@
+const arrQuerySelect = (selector) => {
+    const nodeList = document.querySelectorAll(selector)
+    const arr = [];
+    nodeList.forEach((node) => {arr.push(node);});
+    return arr;
+}
+
+const click = (element) => {
+    const evt = new PointerEvent('click', {
+        bubbles: true,
+    });
+    element.dispatchEvent(evt);
+}
+
 const parseElementName = function(str) {
     let _element = {tag:"", id:"", classList:""};
 
@@ -34,13 +48,6 @@ const parseElementName = function(str) {
     return element;
 
 }
-
-const el = function (name, textContent) {
-    const element = parseElementName(name);
-    element.textContent = textContent;
-    return element;
-}
-
 const appendChildren = function(parent, ...children) {
     children.forEach(function(child) {
         parent.appendChild(child);
@@ -48,4 +55,41 @@ const appendChildren = function(parent, ...children) {
 }
 
 
-export {el, appendChildren};
+const camelCase = function(str) {
+    if (!str) {return undefined}
+    let words = str.split(" ");
+    words = words.map(word => titleCase(word));
+    words[0] = words[0].toLowerCase();
+    return words.join('');
+}
+
+const el = function (name, textContent) {
+    const element = parseElementName(name);
+    element.textContent = textContent;
+    return element;
+}    
+
+const getParentOfClass = function(element,targetClass) {
+    if (!element || element.tagName === "BODY") {return;}
+    if (element.classList.contains(targetClass)) {
+        return element;
+    } else {
+        return getParentOfClass(element.parentElement,targetClass);
+    }
+}
+
+const titleCase = function (str) {
+    const words = str.split(" ");
+    const wordsCapitalized = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+    return wordsCapitalized.join(" ");
+}
+
+export {
+    appendChildren,
+    arrQuerySelect,
+    camelCase,
+    click,
+    el,
+    getParentOfClass,
+    titleCase,
+}
